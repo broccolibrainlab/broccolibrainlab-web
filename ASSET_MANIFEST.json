@@ -1,0 +1,72 @@
+[
+  {
+    "path": "visuals/approved/01-original-dark-homepage.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1572779,
+    "sha256": "4b8c51c4bdf1824a9fca81f8a25e4b8cac03308c41580ecfd3db6cf6b5459110"
+  },
+  {
+    "path": "visuals/approved/02-combined-homepage.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1620712,
+    "sha256": "77d47263e79c5d0af577c7d5a8db49864253e7808ce65a2728fb3965d31fb301"
+  },
+  {
+    "path": "visuals/approved/03-refined-logo-lockup.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1248135,
+    "sha256": "d9d085f7f08724592be6b17c6539225f3a5bef90fb28cafb659bcf415250096c"
+  },
+  {
+    "path": "visuals/approved/04-square-logo.png",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 1328431,
+    "sha256": "bad6f5b3e108445e5763ca9d56491cdc7b28a9bf02d9b41f94351cae3d843e5a"
+  },
+  {
+    "path": "visuals/approved/05-linkedin-banner.png",
+    "width": 2172,
+    "height": 724,
+    "bytes": 1214006,
+    "sha256": "0c0aaa1e373af41502a4d05cad071efd11043e6a2358b968d663d88d83d85043"
+  },
+  {
+    "path": "visuals/archive/white-green-theme.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1431840,
+    "sha256": "d7ea8df34d692814b78c11dc2dea17fa7175984bd5b59dbf675fd2fe1760c949"
+  },
+  {
+    "path": "visuals/archive/warm-editorial-theme.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1578530,
+    "sha256": "3e311fa4ccd599d9d04be98743b3624062a0bebaf752fd0160317d8249ec1e51"
+  },
+  {
+    "path": "visuals/archive/superseded-tagline-headline-neuron-homepage.png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1431378,
+    "sha256": "e0abcfc13a84f884c8eb0e6103645bebb690efd57784b15e48e8d8531cda1a28"
+  },
+  {
+    "path": "visuals/archive/superseded-banner-with-logo.png",
+    "width": 2172,
+    "height": 724,
+    "bytes": 1259541,
+    "sha256": "1431d8f74bac8a5a08ccd8029378a36b81c8774da2420ff68829d6d2c41c60f8"
+  },
+  {
+    "path": "visuals/archive/legacy-logo-original.jpeg",
+    "width": 1280,
+    "height": 698,
+    "bytes": 69385,
+    "sha256": "c781c698ef036c264c3dee48b3815311af23b42348f63d117c004267ed8cdd83"
+  }
+]

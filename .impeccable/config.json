@@ -1,0 +1,59 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-12T18:28:52.743Z",
+        "reason": "BUILD_BRIEF.md \u00a76 names Inter as the starting candidate; metrics were matched against the approved reference screenshots"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-10-12T18:28:52.791Z",
+        "reason": "agent triage: flagged borders are full-width section rules and column dividers with 20-112px spacing, not boxed containers"
+      },
+      {
+        "rule": "hero-eyebrow-chip",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-10-12T18:28:57.774Z",
+        "reason": "BUILD_BRIEF.md \u00a78 requires eyebrow 'STUDENT-LED NEUROSCIENCE' above the headline; present in approved comps 01/02"
+      },
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-10-12T18:28:57.795Z",
+        "reason": "BUILD_BRIEF.md \u00a78 requires small label 'RESEARCH IN PROGRESS' above the research title; present in approved comp 02"
+      },
+      {
+        "rule": "tight-leading",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-10-12T18:28:57.813Z",
+        "reason": "agent triage: browser check shows all multi-line body text at >=1.3; 1.0 only on single-line labels/buttons, 1.2 on headings, 0.92 on the two-line hero headline locked to the approved reference"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "site/app/globals.css"
+        ],
+        "createdAt": "2026-10-13T06:03:38.892Z",
+        "reason": "BUILD_BRIEF.md \u00a78 requires 'a short vertical sage accent on the left' of the research strip; present in approved comp visuals/approved/02-combined-homepage.png (now a thin 3px line)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+# OS
+.DS_Store
+
+# local design-hook cache (config.json is shared and committed)
+.impeccable/hook.cache.json
+
+# website build output and dependencies (also covered by site/.gitignore)
+site/node_modules/
+site/.next/
+site/out/

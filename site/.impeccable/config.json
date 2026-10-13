@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/globals.css"
+        ],
+        "createdAt": "2026-10-13T06:07:00.963Z",
+        "reason": "BUILD_BRIEF.md §8 requires 'a short vertical sage accent on the left' of the research strip; present in approved comp visuals/approved/02-combined-homepage.png (rendered as a thin 3px line)"
+      }
+    ]
+  }
+}
