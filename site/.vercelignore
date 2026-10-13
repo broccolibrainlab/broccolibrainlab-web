@@ -1,0 +1,7 @@
+node_modules
+.next
+out
+.impeccable
+*.tsbuildinfo
+.env*.local
+.vercel

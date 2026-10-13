@@ -55,7 +55,9 @@ python3 -m http.server 8000 -d out
 
 ## Deploy
 
-Upload the contents of `out/` to any static host.
+**Vercel (live site):** every push to `main` is deployed to the Vercel project `broccolibrainlab-web` by the GitHub Actions workflow in `.github/workflows/deploy-vercel.yml`. It needs a repository secret named `VERCEL_TOKEN`; see the comment at the top of that file. The Vercel project's Root Directory is set to `site`. For a manual deploy, run `npx vercel deploy --prod` from the repository root, not from inside `site/`.
+
+**Any other static host:** upload the contents of `out/`.
 
 For a GitHub Pages project site (`https://<user>.github.io/<repo>/`), build with the repository name as the base path:
 

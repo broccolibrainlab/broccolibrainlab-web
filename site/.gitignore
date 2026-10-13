@@ -10,3 +10,8 @@ next-env.d.ts
 # local tooling / OS
 .impeccable/hook.cache.json
 .DS_Store
+
+# Vercel CLI project link
+.vercel/
+.vercel
+.env*

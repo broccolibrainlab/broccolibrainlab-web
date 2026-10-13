@@ -1,0 +1,74 @@
+# Deploys the website (site/) to the Vercel project on every push to main.
+#
+# Vercel's built-in Git integration can't be used because the repository belongs to a personal
+# GitHub account that the Vercel project owner can't install apps for. This workflow does the same
+# job with the Vercel CLI.
+#
+# One-time setup: add a repository secret named VERCEL_TOKEN
+# (GitHub → Settings → Secrets and variables → Actions), created at https://vercel.com/account/settings/tokens
+# with access to the "DraQ's projects" team. Until it exists, the deploy job is skipped, not failed.
+
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Only the newest push deploys; an older run still in progress is cancelled.
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Identifiers, not credentials. The project's Root Directory is set to `site` in Vercel.
+  VERCEL_ORG_ID: team_urusYi1bWlnmA2ycQjd7I8AQ
+  VERCEL_PROJECT_ID: prj_Tz9ZmVt9zAIxdnUPCzeU7jZ9pO7x
+
+jobs:
+  check-token:
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - id: check
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::VERCEL_TOKEN secret is not set, so the deploy was skipped. See the comment at the top of this workflow."
+          fi
+
+  deploy:
+    needs: check-token
+    if: needs.check-token.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://broccolibrainlab-web.vercel.app
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@63
+
+      - name: Pull project settings
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"

@@ -8,6 +8,7 @@ Website for Broccoli Brain Lab, a student-led group exploring cognition, memory 
 | Path | What it is |
 |---|---|
 | [`site/`](site/) | The website: a Next.js app exported as a static site. Start with [`site/README.md`](site/README.md). |
+| [`.github/workflows/`](.github/workflows/) | `deploy-vercel.yml` deploys `site/` to Vercel on every push to `main`. |
 | [`BUILD_BRIEF.md`](BUILD_BRIEF.md), [`START_HERE.md`](START_HERE.md) | The original design and build brief. |
 | [`visuals/approved/`](visuals/approved/) | Approved reference images: homepage comps, logo, banner. The hero brain and logo assets are extracted from these. |
 | [`visuals/archive/`](visuals/archive/) | Superseded explorations, kept for context only. |
