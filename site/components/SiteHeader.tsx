@@ -18,8 +18,11 @@ function NavLink({ item, onHome, current }: { item: NavItem; onHome: boolean; cu
       <Link href={`${PAGE.home}${anchor(item.section)}`}>{item.label}</Link>
     );
   }
+  // "page" on the page itself; "true" on pages inside it (e.g. a tool under Resources).
+  const page = trimSlash(item.page);
+  const ariaCurrent = page === current ? "page" : current.startsWith(`${page}/`) ? "true" : undefined;
   return (
-    <Link href={item.page} aria-current={trimSlash(item.page) === current ? "page" : undefined}>
+    <Link href={item.page} aria-current={ariaCurrent}>
       {item.label}
     </Link>
   );

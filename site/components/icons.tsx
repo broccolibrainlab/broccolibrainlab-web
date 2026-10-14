@@ -15,6 +15,7 @@ function Svg({ className, viewBox, children }: SvgProps) {
 
 const ARROW_PATHS = {
   right: "M2 8h11.5M9 3.5 13.5 8 9 12.5",
+  left: "M14 8H2.5M7 3.5 2.5 8 7 12.5",
   up: "M8 13.5V2.5M3.5 7 8 2.5 12.5 7",
   external: "M4.5 11.5 11.5 4.5M5.5 4.5h6v6",
 };
