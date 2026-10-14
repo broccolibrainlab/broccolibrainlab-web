@@ -78,6 +78,8 @@ export type CompositeOptions = {
   opacity: number;
   fixations: readonly Fixation[];
   fontFamily: string;
+  /** Enlarges fixation markers, for images shown much smaller than they are drawn. */
+  markerScale?: number;
 };
 
 /** Draws the chosen view at width × height. Transparent parts of the image sit on white, as the models see them. */
@@ -87,7 +89,7 @@ export function drawComposite(
   height: number,
   image: CanvasImageSource,
   layers: Layers,
-  { view, opacity, fixations, fontFamily }: CompositeOptions,
+  { view, opacity, fixations, fontFamily, markerScale = 1 }: CompositeOptions,
 ) {
   ctx.save();
   ctx.imageSmoothingEnabled = true;
@@ -107,14 +109,21 @@ export function drawComposite(
     }
   }
 
-  if (fixations.length) drawFixations(ctx, width, height, fixations, fontFamily);
+  if (fixations.length) drawFixations(ctx, width, height, fixations, fontFamily, markerScale);
   ctx.restore();
 }
 
 /** Open rings joined in order, each with a numbered badge, so the fixated spot itself stays visible.
     Sizes are relative to the image so they read the same at any resolution. */
-function drawFixations(ctx: CanvasRenderingContext2D, width: number, height: number, fixations: readonly Fixation[], fontFamily: string) {
-  const unit = Math.max(width, height) / 100;
+function drawFixations(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  fixations: readonly Fixation[],
+  fontFamily: string,
+  scale: number,
+) {
+  const unit = (Math.max(width, height) / 100) * scale;
   const ring = Math.max(14, unit * 3.2);
   const badge = Math.max(9, unit * 1.5);
   const line = Math.max(1.5, unit * 0.28);

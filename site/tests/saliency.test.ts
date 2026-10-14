@@ -3,8 +3,8 @@
 
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { computeSaliency, predictFixations, type RGBAImage, type SaliencyMethod } from "../lib/saliency.ts";
-import { STIMULUS_CELLS, colourPopout, orientationPopout, type Stimulus } from "../lib/saliencyStimuli.ts";
+import { computeSaliency, predictFixations, summarizeSaliency, type GrayMap, type RGBAImage, type SaliencyMethod } from "../lib/saliency.ts";
+import { STIMULUS_CELLS, colourPopout, noPopout, orientationPopout, type Stimulus } from "../lib/saliencyStimuli.ts";
 
 const ALL_CELLS = Array.from({ length: STIMULUS_CELLS }, (_, i) => i);
 
@@ -175,4 +175,45 @@ describe("predicted fixations", () => {
       }
     }
   });
+});
+
+describe("comparison summary", () => {
+  const mapOf = (width: number, height: number, value: (x: number, y: number) => number): GrayMap => {
+    const data = new Float32Array(width * height);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) data[y * width + x] = value(x, y);
+    return { width, height, data };
+  };
+
+  test("is null when nothing is salient", () => {
+    assert.equal(summarizeSaliency(mapOf(40, 30, () => 0)), null);
+  });
+
+  test("a single bright spot: high standout, tiny salient area, peak on the spot", () => {
+    const summary = summarizeSaliency(mapOf(100, 100, (x, y) => (x === 70 && y === 20 ? 1 : 0)))!;
+    assert.equal(summary.standout, 20);
+    assert.equal(summary.salientArea, 1 / 10000);
+    assert.deepEqual(summary.peak, { x: 0.705, y: 0.205 });
+  });
+
+  test("two equal spots far apart: standout of 1", () => {
+    const summary = summarizeSaliency(mapOf(100, 100, (x, y) => ((x === 10 || x === 90) && y === 50 ? 1 : 0)))!;
+    assert.equal(summary.standout, 1);
+  });
+
+  // The comparison the tool is for: displays with an odd item out against the same display without one.
+  const detects: [string, () => Stimulus, SaliencyMethod[]][] = [
+    ["colour", () => colourPopout(12), ["itti", "spectral", "frequency"]],
+    ["orientation", () => orientationPopout(12), ["itti", "spectral"]],
+  ];
+  for (const [name, make, methods] of detects) {
+    for (const method of methods) {
+      test(`${method}: the ${name} pop-out stands out more, over a smaller area, than the display without one`, () => {
+        const popout = summarizeSaliency(computeSaliency(make().image, method))!;
+        const baseline = summarizeSaliency(computeSaliency(noPopout().image, method))!;
+        assert.ok(popout.standout >= 1.3, `pop-out standout ${popout.standout.toFixed(2)}`);
+        assert.ok(baseline.standout < 1.15, `baseline standout ${baseline.standout.toFixed(2)}`);
+        assert.ok(popout.salientArea < baseline.salientArea, `area ${popout.salientArea.toFixed(3)} vs ${baseline.salientArea.toFixed(3)}`);
+      });
+    }
+  }
 });
