@@ -8,6 +8,7 @@ site/
 │   ├── layout.tsx         <html>, metadata, self-hosted Inter via next/font
 │   ├── page.tsx           composes the home page sections
 │   ├── resources/page.tsx the Resources page (/resources/)
+│   ├── resources/saliency/page.tsx  the Saliency map tool page
 │   ├── globals.css        design tokens (top of file), layout, responsive rules
 │   ├── fonts/             InterVariable.woff2 (wght + opsz axes), OFL.txt licence
 │   ├── icon.png           favicon
@@ -22,12 +23,18 @@ site/
 │   ├── About.tsx, Notes.tsx, Contact.tsx, SiteFooter.tsx
 │   ├── LogoMark.tsx       the logo mark image, used in header, About and footer
 │   ├── ResourceList.tsx   the tool list (or empty state) on the Resources page
+│   ├── saliency/SaliencyTool.tsx  the saliency tool's UI: upload, models, views, fixations, downloads (client)
 │   ├── InPageFocus.tsx    moves keyboard focus to in-page link targets (client)
 │   └── icons.tsx          inline SVG icons and the <Arrow direction> component
 ├── lib/
 │   ├── site.ts            site name, tagline, LinkedIn URL, section ids, page routes, nav items, mobile breakpoint
 │   ├── resources.ts       the tools listed on the Resources page
-│   └── brainEngine.ts     framework-free canvas animation for the hero brain
+│   ├── brainEngine.ts     framework-free canvas animation for the hero brain
+│   ├── saliency.ts        saliency models (Itti–Koch, spectral residual, frequency-tuned) and fixation prediction
+│   ├── saliencyStimuli.ts pop-out search displays: the tool's samples and the test fixtures
+│   └── saliencyRender.ts  canvas drawing and downloads for the saliency tool
+├── tests/
+│   └── saliency.test.ts   checks each model finds the odd item out, plus edge cases (npm test)
 ├── assets/
 │   ├── images/            hero-brain.png, logo-mark.png
 │   └── data/              brain-graph.json (traced geometry of the hero brain)
@@ -47,7 +54,8 @@ npm run dev        # local development at http://localhost:3000
 npm run build      # static site written to out/
 npm run lint
 npm run typecheck
-npm run check      # lint + typecheck + build; run before pushing
+npm test           # saliency model tests (Node's built-in test runner)
+npm run check      # lint + typecheck + test + build; run before pushing
 ```
 
 To preview the production build, serve `out/` with any static server:
@@ -78,6 +86,7 @@ For a user site (`https://<user>.github.io/`) or a custom domain, build without 
 - **Mobile breakpoint:** `820px` is used in `app/globals.css` and in `MOBILE_NAV_QUERY` in `lib/site.ts`. Change both together.
 - **Team members:** the `#team` block in `About.tsx` holds a placeholder. Replace it with real member details when you have them.
 - **Resources (tools):** add an entry to `RESOURCES` in `lib/resources.ts` with a `title`, a short `description`, an `href` and optional `tags`. The `href` can be a full external URL (a GitHub repo, a hosted app; opens in a new tab) or a page on this site. To host a tool on the site itself, create `app/resources/<tool-name>/page.tsx` and use `href: "/resources/<tool-name>/"`. While the list is empty, the page shows a "coming soon" message.
+- **Saliency tool:** the models live in `lib/saliency.ts` and run entirely in the browser; images are never uploaded. Every model change should keep `npm test` passing: it checks that each model picks out the odd item in the sample displays at all 30 positions.
 - **Notes:** the `TOPICS` list in `Notes.tsx` has plain descriptions. Swap them for links once notes are published.
 
 ## How the assets were made

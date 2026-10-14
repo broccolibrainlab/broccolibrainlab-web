@@ -2,12 +2,14 @@
   "name": "broccoli-brain-lab",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run build"
+    "check": "npm run lint && npm run typecheck && npm test && npm run build",
+    "test": "node --test \"tests/*.test.ts\""
   },
   "dependencies": {
     "next": "^16.4.0",
