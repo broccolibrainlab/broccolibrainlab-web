@@ -89,6 +89,12 @@ export function colourPopout(targetCell = 10, seed = 7): Stimulus {
   return display([150, 150, 150], 22, { shape: disc(20), colour: [60, 160, 80] }, { shape: disc(20), colour: [205, 60, 55] }, targetCell, seed);
 }
 
+/** The colour display with no odd item: every disc is green. A baseline for comparing against the pop-outs. */
+export function noPopout(seed = 7): Stimulus {
+  const green = { shape: disc(20), colour: [60, 160, 80] as const };
+  return display([150, 150, 150], 22, green, green, 0, seed);
+}
+
 /** One tilted bar among vertical bars. */
 export function orientationPopout(targetCell = 21, seed = 3): Stimulus {
   const vertical = bar(22, 5, Math.PI / 2);

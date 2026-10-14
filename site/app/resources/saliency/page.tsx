@@ -67,7 +67,8 @@ export default function SaliencyPage() {
             </h1>
             <p className="page-lede">
               Add an image to see which parts are most likely to catch the eye in the first moments of looking,
-              according to classic computational models of visual attention.
+              according to classic computational models of visual attention. Or add several to compare them side by
+              side.
             </p>
           </div>
         </section>
@@ -113,6 +114,17 @@ export default function SaliencyPage() {
                 The numbered points show where the model expects the eyes to land first, second, and so on. The tool
                 repeatedly takes the most salient point and then suppresses the area around it, so the next pick moves
                 elsewhere. Itti and colleagues call this winner-take-all with inhibition of return.
+              </p>
+
+              <h3 className="minor-title how-heading">Comparing images</h3>
+              <p className="prose">
+                Compare mode runs the same model on up to 12 images and reports two numbers for each.{" "}
+                <em>Standout</em> is how many times more salient the image’s peak is than the next-best spot elsewhere
+                in it: about 1× when several spots compete, higher when one clearly wins. <em>Salient area</em> is the
+                share of the image at least half as salient as its peak. With Itti–Koch on the sample set, the two displays
+                with an odd item out stand out at 3.6× and 1.8×, against 1.0× for the display without one. Each map is scaled to its
+                own image, so these numbers compare how attention is distributed within each image, not which image is
+                more eye-catching overall.
               </p>
 
               <h3 className="minor-title how-heading">What it can’t tell you</h3>

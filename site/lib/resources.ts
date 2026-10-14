@@ -15,7 +15,7 @@ export const RESOURCES: readonly Resource[] = [
   {
     title: "Saliency map",
     description:
-      "Add an image and see which parts are most likely to catch the eye first, using three classic models of bottom-up visual attention. Runs in your browser; images are never uploaded.",
+      "Add an image and see which parts are most likely to catch the eye first, or compare several side by side, using three classic models of bottom-up visual attention. Runs in your browser; images are never uploaded.",
     href: "/resources/saliency/",
     tags: ["Visual attention", "Images", "Web app"],
   },

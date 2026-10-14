@@ -72,6 +72,34 @@ export function predictFixations(map: GrayMap, count: number, radius = 0.1): Fix
   return fixations;
 }
 
+/** How salience is distributed over one image. Maps are scaled to their own image, so these describe where
+    attention goes within an image and how concentrated it is, not how eye-catching one image is versus another. */
+export type SaliencySummary = {
+  /** How many times more salient the peak is than the best spot elsewhere (outside the inhibition-of-return radius).
+      About 1 when several spots compete equally; higher when one spot clearly dominates. Capped at 20. */
+  standout: number;
+  /** Share of the image that is at least half as salient as its peak. */
+  salientArea: number;
+  /** The most salient point, as fractions of the image width and height. */
+  peak: { x: number; y: number };
+};
+
+const STANDOUT_FLOOR = 0.05; // runner-up values below this count as 0.05, which caps standout at 20
+
+/** Returns null for a map with no salience at all (a single-colour image). */
+export function summarizeSaliency(map: GrayMap, radius = 0.1): SaliencySummary | null {
+  const [first, second] = predictFixations(map, 2, radius);
+  if (!first) return null;
+  const half = first.value / 2;
+  let salient = 0;
+  for (const v of map.data) if (v >= half) salient++;
+  return {
+    standout: first.value / Math.max(second?.value ?? 0, STANDOUT_FLOOR),
+    salientArea: salient / map.data.length,
+    peak: { x: first.x, y: first.y },
+  };
+}
+
 /* ---------- Map primitives ---------- */
 
 function createMap(width: number, height: number): GrayMap {

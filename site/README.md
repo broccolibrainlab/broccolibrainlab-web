@@ -23,14 +23,14 @@ site/
 │   ├── About.tsx, Notes.tsx, Contact.tsx, SiteFooter.tsx
 │   ├── LogoMark.tsx       the logo mark image, used in header, About and footer
 │   ├── ResourceList.tsx   the tool list (or empty state) on the Resources page
-│   ├── saliency/SaliencyTool.tsx  the saliency tool's UI: upload, models, views, fixations, downloads (client)
+│   ├── saliency/          the saliency tool (client): SaliencyTool (tabs), SingleView, CompareView, shared
 │   ├── InPageFocus.tsx    moves keyboard focus to in-page link targets (client)
 │   └── icons.tsx          inline SVG icons and the <Arrow direction> component
 ├── lib/
 │   ├── site.ts            site name, tagline, LinkedIn URL, section ids, page routes, nav items, mobile breakpoint
 │   ├── resources.ts       the tools listed on the Resources page
 │   ├── brainEngine.ts     framework-free canvas animation for the hero brain
-│   ├── saliency.ts        saliency models (Itti–Koch, spectral residual, frequency-tuned) and fixation prediction
+│   ├── saliency.ts        saliency models (Itti–Koch, spectral residual, frequency-tuned), fixations, comparison summary
 │   ├── saliencyStimuli.ts pop-out search displays: the tool's samples and the test fixtures
 │   └── saliencyRender.ts  canvas drawing and downloads for the saliency tool
 ├── tests/
