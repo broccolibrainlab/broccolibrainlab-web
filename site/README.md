@@ -6,7 +6,8 @@ A Next.js app (App Router, TypeScript) with a dark theme only. It builds to a fu
 site/
 ├── app/
 │   ├── layout.tsx         <html>, metadata, self-hosted Inter via next/font
-│   ├── page.tsx           composes the page sections
+│   ├── page.tsx           composes the home page sections
+│   ├── resources/page.tsx the Resources page (/resources/)
 │   ├── globals.css        design tokens (top of file), layout, responsive rules
 │   ├── fonts/             InterVariable.woff2 (wght + opsz axes), OFL.txt licence
 │   ├── icon.png           favicon
@@ -20,10 +21,12 @@ site/
 │   ├── SplitSection.tsx   shared label + heading / content layout used by About, Notes, Contact
 │   ├── About.tsx, Notes.tsx, Contact.tsx, SiteFooter.tsx
 │   ├── LogoMark.tsx       the logo mark image, used in header, About and footer
+│   ├── ResourceList.tsx   the tool list (or empty state) on the Resources page
 │   ├── InPageFocus.tsx    moves keyboard focus to in-page link targets (client)
 │   └── icons.tsx          inline SVG icons and the <Arrow direction> component
 ├── lib/
-│   ├── site.ts            site name, tagline, LinkedIn URL, section ids, nav items, mobile breakpoint
+│   ├── site.ts            site name, tagline, LinkedIn URL, section ids, page routes, nav items, mobile breakpoint
+│   ├── resources.ts       the tools listed on the Resources page
 │   └── brainEngine.ts     framework-free canvas animation for the hero brain
 ├── assets/
 │   ├── images/            hero-brain.png, logo-mark.png
@@ -74,6 +77,7 @@ For a user site (`https://<user>.github.io/`) or a custom domain, build without 
 - **Colours, spacing, type scale:** the tokens are at the top of `app/globals.css` (`--bg`, `--sage`, `--text`, `--gutter`, …). The hero canvas reads `--sage` and `--sage-bright` at runtime. If you change `--bg`, also update `themeColor` in `app/layout.tsx`.
 - **Mobile breakpoint:** `820px` is used in `app/globals.css` and in `MOBILE_NAV_QUERY` in `lib/site.ts`. Change both together.
 - **Team members:** the `#team` block in `About.tsx` holds a placeholder. Replace it with real member details when you have them.
+- **Resources (tools):** add an entry to `RESOURCES` in `lib/resources.ts` with a `title`, a short `description`, an `href` and optional `tags`. The `href` can be a full external URL (a GitHub repo, a hosted app; opens in a new tab) or a page on this site. To host a tool on the site itself, create `app/resources/<tool-name>/page.tsx` and use `href: "/resources/<tool-name>/"`. While the list is empty, the page shows a "coming soon" message.
 - **Notes:** the `TOPICS` list in `Notes.tsx` has plain descriptions. Swap them for links once notes are published.
 
 ## How the assets were made

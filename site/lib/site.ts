@@ -21,11 +21,21 @@ export type SectionId = (typeof SECTION)[keyof typeof SECTION];
 
 export const anchor = (id: SectionId) => `#${id}`;
 
-export const NAV_ITEMS: readonly { id: SectionId; label: string }[] = [
-  { id: SECTION.about, label: "About" },
-  { id: SECTION.research, label: "Research" },
-  { id: SECTION.notes, label: "Notes" },
-  { id: SECTION.contact, label: "Contact" },
+/** Routes other than the home page. Trailing slashes match `trailingSlash: true` in next.config.ts. */
+export const PAGE = {
+  home: "/",
+  resources: "/resources/",
+} as const;
+
+/** A nav item points either at a home-page section or at a separate page. */
+export type NavItem = { label: string } & ({ section: SectionId } | { page: string });
+
+export const NAV_ITEMS: readonly NavItem[] = [
+  { section: SECTION.about, label: "About" },
+  { section: SECTION.research, label: "Research" },
+  { section: SECTION.notes, label: "Notes" },
+  { page: PAGE.resources, label: "Resources" },
+  { section: SECTION.contact, label: "Contact" },
 ];
 
 /** Must match the `@media (max-width: 820px)` mobile-nav breakpoint in app/globals.css. */

@@ -1,10 +1,33 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MOBILE_NAV_QUERY, NAV_ITEMS, SITE, anchor } from "@/lib/site";
+import { MOBILE_NAV_QUERY, NAV_ITEMS, PAGE, SITE, anchor, type NavItem } from "@/lib/site";
 import LogoMark from "./LogoMark";
 
+const trimSlash = (path: string) => path.replace(/\/+$/, "") || "/";
+
+function NavLink({ item, onHome, current }: { item: NavItem; onHome: boolean; current: string }) {
+  // Section links stay plain in-page anchors on the home page (InPageFocus relies on that);
+  // from any other page they lead back to the home page section.
+  if ("section" in item) {
+    return onHome ? (
+      <a href={anchor(item.section)}>{item.label}</a>
+    ) : (
+      <Link href={`${PAGE.home}${anchor(item.section)}`}>{item.label}</Link>
+    );
+  }
+  return (
+    <Link href={item.page} aria-current={trimSlash(item.page) === current ? "page" : undefined}>
+      {item.label}
+    </Link>
+  );
+}
+
 export default function SiteHeader() {
+  const current = trimSlash(usePathname());
+  const onHome = current === PAGE.home;
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -64,10 +87,17 @@ export default function SiteHeader() {
   return (
     <header className="site-header" id="top">
       <div className="container header-inner">
-        <a className="brand" href="#top">
-          <LogoMark className="brand-mark" size={32} />
-          <span className="brand-name">{SITE.name}</span>
-        </a>
+        {onHome ? (
+          <a className="brand" href="#top">
+            <LogoMark className="brand-mark" size={32} />
+            <span className="brand-name">{SITE.name}</span>
+          </a>
+        ) : (
+          <Link className="brand" href={PAGE.home}>
+            <LogoMark className="brand-mark" size={32} />
+            <span className="brand-name">{SITE.name}</span>
+          </Link>
+        )}
 
         <button
           ref={toggleRef}
@@ -93,8 +123,8 @@ export default function SiteHeader() {
         >
           <ul>
             {NAV_ITEMS.map((item) => (
-              <li key={item.id}>
-                <a href={anchor(item.id)}>{item.label}</a>
+              <li key={item.label}>
+                <NavLink item={item} onHome={onHome} current={current} />
               </li>
             ))}
           </ul>
