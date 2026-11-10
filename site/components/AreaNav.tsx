@@ -1,9 +1,11 @@
-import { AREAS, AREA_NAV, type Area } from "@/lib/site";
+import { ALL_AREAS, AREA_NAV, type Area } from "@/lib/site";
 import SmartLink from "./SmartLink";
 
 /** Secondary bar under the header on each focus-area page: the area's name and its sections. */
 export default function AreaNav({ area: key }: { area: Area["key"] }) {
-  const area = AREAS.find((a) => a.key === key)!;
+  const area = ALL_AREAS.find((a) => a.key === key)!;
+  const links = AREA_NAV[key];
+  if (!links) return null;
   return (
     <nav className="area-nav" aria-label={area.label}>
       <div className="container area-nav-inner">
@@ -12,7 +14,7 @@ export default function AreaNav({ area: key }: { area: Area["key"] }) {
           {area.label}
         </SmartLink>
         <ul className="area-nav-links">
-          {AREA_NAV[key].map((item) => (
+          {links.map((item) => (
             <li key={item.label}>
               <SmartLink href={item.href} markCurrent>
                 {item.label}

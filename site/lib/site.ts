@@ -4,7 +4,7 @@ export const SITE = {
   name: "Broccoli Brain Lab",
   tagline: "Observe, Question, Explore",
   description:
-    "Broccoli Brain Lab is where people from different fields connect to build better solutions for the world — in business, neuroscience and gaming.",
+    "Broccoli Brain Lab is where people from different fields connect to build better solutions for the world — in business and gaming.",
   linkedinUrl: "https://www.linkedin.com/company/116784298/",
   email: "info@broccolibrain.net",
 } as const;
@@ -75,9 +75,12 @@ export type Area = {
   label: string;
   href: string;
   summary: string;
+  /** Hidden areas keep their pages, but are left out of the menu and the home page. */
+  hidden?: boolean;
 };
 
-export const AREAS: readonly Area[] = [
+/** Every area, including hidden ones (their own pages still need their name and bar). */
+export const ALL_AREAS: readonly Area[] = [
   {
     key: "business",
     label: "Business Solutions",
@@ -89,6 +92,9 @@ export const AREAS: readonly Area[] = [
     label: "Neuroscience Lab",
     href: PAGE.neuroscience,
     summary: "Student-led learning about cognition, memory and EEG.",
+    // Hidden for now: /neuroscience/ and its Resources still work, but nothing links to them.
+    // Delete this line to bring the Neuroscience Lab back into the menu and onto the home page.
+    hidden: true,
   },
   {
     key: "gaming",
@@ -97,6 +103,9 @@ export const AREAS: readonly Area[] = [
     summary: "Games we design and build, and what they teach us.",
   },
 ];
+
+/** The areas shown in the menu and on the home page. */
+export const AREAS: readonly Area[] = ALL_AREAS.filter((area) => !area.hidden);
 
 export type NavLinkItem = { label: string; href: string };
 export type NavItem = NavLinkItem | { label: string; areas: readonly Area[] };
@@ -109,14 +118,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { label: "Contact", href: sectionHref(PAGE.home, HOME_SECTION.contact) },
 ];
 
-/** The secondary bar shown on each focus-area page. */
-export const AREA_NAV: Record<Area["key"], readonly NavLinkItem[]> = {
-  business: [
-    { label: "Services", href: sectionHref(PAGE.business, BUSINESS_SECTION.services) },
-    { label: "Industries", href: sectionHref(PAGE.business, BUSINESS_SECTION.industries) },
-    { label: "Approach", href: sectionHref(PAGE.business, BUSINESS_SECTION.approach) },
-    { label: "Contact", href: sectionHref(PAGE.business, BUSINESS_SECTION.contact) },
-  ],
+/** The secondary bar under the header. Only the Neuroscience Lab has one, for its Resources pages; the other
+ *  areas show their name in the main header instead (SiteHeader). */
+export const AREA_NAV: Partial<Record<Area["key"], readonly NavLinkItem[]>> = {
   neuro: [
     { label: "Exploring", href: sectionHref(PAGE.neuroscience, NEURO_SECTION.exploring) },
     { label: "Research", href: sectionHref(PAGE.neuroscience, NEURO_SECTION.research) },
@@ -124,11 +128,6 @@ export const AREA_NAV: Record<Area["key"], readonly NavLinkItem[]> = {
     { label: "Notes", href: sectionHref(PAGE.neuroscience, NEURO_SECTION.notes) },
     { label: "Resources", href: PAGE.neuroResources },
     { label: "Contact", href: sectionHref(PAGE.neuroscience, NEURO_SECTION.contact) },
-  ],
-  gaming: [
-    { label: "Play", href: sectionHref(PAGE.gaming, GAMING_SECTION.play) },
-    { label: "Exploring", href: sectionHref(PAGE.gaming, GAMING_SECTION.exploring) },
-    { label: "Contact", href: sectionHref(PAGE.gaming, GAMING_SECTION.contact) },
   ],
 };
 

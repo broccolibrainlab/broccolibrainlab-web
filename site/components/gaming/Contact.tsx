@@ -1,12 +1,14 @@
 import { GAMING_SECTION } from "@/lib/site";
-import ContactDetails from "../ContactDetails";
-import SplitSection from "../SplitSection";
+import LpClosing from "../landing/LpClosing";
 
 export default function Contact() {
   return (
-    <SplitSection id={GAMING_SECTION.contact} title="Want to playtest?">
-      <p className="prose-lead">Try early builds and tell us what you think.</p>
-      <ContactDetails subject="Playtesting" />
-    </SplitSection>
+    <LpClosing
+      id={GAMING_SECTION.contact}
+      title="Want to playtest?"
+      statement="Try early builds, tell us what works, and help shape the games we make next."
+      note="Players, designers and developers"
+      subject="Playtesting"
+    />
   );
 }

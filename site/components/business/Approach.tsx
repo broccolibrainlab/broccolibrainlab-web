@@ -1,5 +1,7 @@
-import { BUSINESS_SECTION } from "@/lib/site";
-import SplitSection from "../SplitSection";
+import { BUSINESS_SECTION, anchor } from "@/lib/site";
+import LpProcess from "../landing/LpProcess";
+import Pill from "../landing/Pill";
+import Industries from "./Industries";
 
 // Our tagline — Observe, Question, Explore — is also how we work, with delivery as the fourth step.
 const STEPS = [
@@ -11,18 +13,17 @@ const STEPS = [
 
 export default function Approach() {
   return (
-    <SplitSection id={BUSINESS_SECTION.approach} title="How we work.">
-      <ol className="steps" role="list">
-        {STEPS.map((step, index) => (
-          <li className="step" key={step.title}>
-            <span className="step-num" aria-hidden="true">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="step-title">{step.title}</h3>
-            <p className="step-text">{step.text}</p>
-          </li>
-        ))}
-      </ol>
-    </SplitSection>
+    <LpProcess
+      id={BUSINESS_SECTION.approach}
+      aside={<Industries />}
+      title="How we work"
+      lede="Four steps from first conversation to a working solution, with you involved at every one."
+      steps={STEPS}
+      action={
+        <Pill href={anchor(BUSINESS_SECTION.contact)} variant="dark">
+          Start a project
+        </Pill>
+      }
+    />
   );
 }

@@ -2,6 +2,7 @@
 import { HOME_SECTION } from "@/lib/site";
 import { TEAM, teamPhoto, type TeamMember } from "@/lib/team";
 import { Arrow, PersonIcon } from "../icons";
+import { LpAside } from "../landing/LpProcess";
 
 function MemberCard({ member }: { member: TeamMember }) {
   const placeholder = !member.name;
@@ -27,24 +28,15 @@ function MemberCard({ member }: { member: TeamMember }) {
   );
 }
 
+// The left half of the "How we work together" band: the people who take those steps together.
 export default function Team() {
   return (
-    <section className="lp-areas lp-team" id={HOME_SECTION.team} aria-labelledby="team-title">
-      <div className="lp-wrap">
-        <div className="lp-head">
-          <div>
-            <h2 className="lp-big" id="team-title">
-              The team
-            </h2>
-            <p className="lp-big lp-head-lede">The people who keep the lab connected.</p>
-          </div>
-        </div>
-        <ul className="members lp-members" role="list">
-          {TEAM.map((member, index) => (
-            <MemberCard member={member} key={member.name ?? index} />
-          ))}
-        </ul>
-      </div>
-    </section>
+    <LpAside id={HOME_SECTION.team} title="The team" lede="The people who keep the lab connected.">
+      <ul className="members lp-members" role="list">
+        {TEAM.map((member, index) => (
+          <MemberCard member={member} key={member.name ?? index} />
+        ))}
+      </ul>
+    </LpAside>
   );
 }

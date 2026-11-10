@@ -1,46 +1,25 @@
-import { GAMING_SECTION } from "@/lib/site";
-import { ControllerIcon, FocusIcon, PeopleIcon } from "../icons";
+import { GAMING_SECTION, anchor } from "@/lib/site";
+import LpIntro from "../landing/LpIntro";
+import Pill from "../landing/Pill";
 
 const AREAS = [
-  {
-    icon: <ControllerIcon />,
-    title: "Game design",
-    text: "Mechanics, levels and the feel of play.",
-  },
-  {
-    icon: <FocusIcon />,
-    title: "Play & cognition",
-    text: "How games use attention, memory and reward.",
-  },
-  {
-    icon: <PeopleIcon />,
-    title: "Building together",
-    text: "We prototype, playtest and iterate as a team.",
-  },
+  { figure: "Game design", label: "Feel first", text: "Mechanics, levels and the feel of play." },
+  { figure: "Play", label: "& cognition", text: "How games use attention, memory and reward." },
+  { figure: "Building", label: "together", text: "We prototype, playtest and iterate as a team." },
 ];
 
 export default function Exploring() {
   return (
-    <section className="exploring" id={GAMING_SECTION.exploring} aria-labelledby="exploring-title">
-      <div className="container">
-        <div className="section-head">
-          <h2 className="exploring-title" id="exploring-title">
-            What we’re exploring
-          </h2>
-        </div>
-
-        <ul className="areas" role="list">
-          {AREAS.map((area) => (
-            <li className="area" key={area.title}>
-              {area.icon}
-              <div>
-                <h3 className="area-title">{area.title}</h3>
-                <p className="area-text">{area.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <LpIntro
+      id={GAMING_SECTION.exploring}
+      title="What we’re exploring"
+      paragraphs={[
+        "We make small games, and we make them to learn something.",
+        "Each one is a question about play: what holds attention, what feels fair, what makes people want one more round.",
+        "Designers, developers and players build them together, and every playtest shapes the next version.",
+      ]}
+      action={<Pill href={anchor(GAMING_SECTION.play)}>Our first game</Pill>}
+      figures={AREAS}
+    />
   );
 }

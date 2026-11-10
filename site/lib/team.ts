@@ -14,7 +14,12 @@ export type TeamMember = {
   linkedin?: string;
 };
 
-export const TEAM: readonly TeamMember[] = [{}, {}, {}, {}];
+export const TEAM: readonly TeamMember[] = [
+  { name: "Vihanga Sathsara", photo: "vihanga-sathsara.jpg" },
+  { name: "JV Ransika", photo: "jv-ransika.jpg" },
+  { name: "Tharusha Udana", photo: "tharusha.jpg" },
+  {},
+];
 
 /** Public URL of a photo in public/team/, including the base path when the site is built with one. */
 export const teamPhoto = (file: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/team/${file}`;
