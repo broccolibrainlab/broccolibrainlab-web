@@ -1,46 +1,25 @@
-import { BUSINESS_SECTION } from "@/lib/site";
-import { CompassIcon, InsightIcon, PlatformIcon } from "../icons";
+import { BUSINESS_SECTION, anchor } from "@/lib/site";
+import LpIntro from "../landing/LpIntro";
+import Pill from "../landing/Pill";
 
 const SERVICES = [
-  {
-    icon: <CompassIcon />,
-    title: "Strategy & discovery",
-    text: "We learn how you work and find what’s worth building.",
-  },
-  {
-    icon: <PlatformIcon />,
-    title: "Software & platforms",
-    text: "Web apps, internal tools and integrations that fit.",
-  },
-  {
-    icon: <InsightIcon />,
-    title: "Data & automation",
-    text: "Clear insight from your data, and less routine work.",
-  },
+  { figure: "Strategy", label: "& discovery", text: "We learn how you work and find what’s worth building." },
+  { figure: "Software", label: "& platforms", text: "Web apps, internal tools and integrations that fit." },
+  { figure: "Data", label: "& automation", text: "Clear insight from your data, and less routine work." },
 ];
 
 export default function Services() {
   return (
-    <section className="exploring" id={BUSINESS_SECTION.services} aria-labelledby="services-title">
-      <div className="container">
-        <div className="section-head">
-          <h2 className="exploring-title" id="services-title">
-            What we do
-          </h2>
-        </div>
-
-        <ul className="areas" role="list">
-          {SERVICES.map((service) => (
-            <li className="area" key={service.title}>
-              {service.icon}
-              <div>
-                <h3 className="area-title">{service.title}</h3>
-                <p className="area-text">{service.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <LpIntro
+      id={BUSINESS_SECTION.services}
+      title="What we do"
+      paragraphs={[
+        "We build practical digital solutions for organisations of every size, in many different industries.",
+        "Each one starts with how your business works today, not with a ready-made product.",
+        "Then we design, build and keep improving it with you, one useful step at a time.",
+      ]}
+      action={<Pill href={anchor(BUSINESS_SECTION.approach)}>How we work</Pill>}
+      figures={SERVICES}
+    />
   );
 }

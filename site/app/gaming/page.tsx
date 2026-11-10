@@ -17,8 +17,8 @@ export default function GamingPage() {
   return (
     <PageShell theme="gaming" area="gaming">
       <Hero />
-      <Play />
       <Exploring />
+      <Play />
       <Contact />
     </PageShell>
   );

@@ -1,19 +1,8 @@
-import brainGraph from "@/assets/data/brain-graph.json";
-import businessGraph from "@/assets/data/business-graph.json";
-import gamingGraph from "@/assets/data/gaming-graph.json";
-import type { RawGraph } from "@/lib/brainEngine";
-import { AREAS, HOME_SECTION, anchor, type Area } from "@/lib/site";
-import GraphSvg from "../GraphSvg";
+import { AREAS, HOME_SECTION, anchor } from "@/lib/site";
 import SmartLink from "../SmartLink";
 import { Arrow } from "../icons";
-import Pill from "./Pill";
-
-// Each card shows the artwork from that area's own hero.
-const ART: Record<Area["key"], RawGraph> = {
-  business: businessGraph as RawGraph,
-  neuro: brainGraph as RawGraph,
-  gaming: gamingGraph as RawGraph,
-};
+import AreaArt, { hasArt } from "../landing/AreaArt";
+import Pill from "../landing/Pill";
 
 export default function FocusAreas() {
   return (
@@ -24,7 +13,7 @@ export default function FocusAreas() {
             <h2 className="lp-big" id="focus-title">
               Our focus areas
             </h2>
-            <p className="lp-big lp-head-lede">Business, neuroscience and gaming: where the people who connect here build, research and play.</p>
+            <p className="lp-big lp-head-lede">Business solutions and gaming: where the people who connect here build and play.</p>
           </div>
           <div className="lp-head-aside">
             <p className="lp-small">Each area has its own page, projects and people. Start with the one closest to your field.</p>
@@ -45,7 +34,7 @@ export default function FocusAreas() {
               </h3>
               <p className="lp-small lp-card-text">{area.summary}</p>
               <div className="lp-card-art">
-                <GraphSvg graph={ART[area.key]} className="graph-svg lp-card-graph" />
+                {hasArt(area.key) && <AreaArt area={area.key} tone={area.key === "business" ? "light" : "dark"} />}
               </div>
             </li>
           ))}

@@ -1,6 +1,6 @@
 # Broccoli Brain Lab
 
-Website for Broccoli Brain Lab: a place where people from different fields connect to build better solutions for the world, across three focus areas — Business Solutions, the Neuroscience Lab and Gaming.
+Website for Broccoli Brain Lab: a place where people from different fields connect to build better solutions for the world, across its focus areas — Business Solutions and Gaming. (The Neuroscience Lab pages still exist but are hidden for now; see `hidden` in `site/lib/site.ts`.)
 *Observe, Question, Explore.*
 
 ## Repository layout

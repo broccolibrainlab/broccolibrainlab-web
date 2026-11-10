@@ -3,7 +3,6 @@ import PageShell from "@/components/PageShell";
 import Approach from "@/components/business/Approach";
 import Contact from "@/components/business/Contact";
 import Hero from "@/components/business/Hero";
-import Industries from "@/components/business/Industries";
 import Services from "@/components/business/Services";
 import { SITE, THEME_COLOR } from "@/lib/site";
 
@@ -20,7 +19,6 @@ export default function BusinessPage() {
     <PageShell theme="business" area="business">
       <Hero />
       <Services />
-      <Industries />
       <Approach />
       <Contact />
     </PageShell>

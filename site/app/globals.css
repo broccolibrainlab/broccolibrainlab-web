@@ -59,11 +59,18 @@
   --text-faint: #8b948d;
   --rule: #2c352f;
   --rule-strong: #3a443d;
+  /* A cool aqua-mint beside the sage: the same cool temperature, much brighter, for one word in each hero. */
+  --accent-pop: #5eead4;
 }
 
 .page-theme {
   background: var(--bg);
   color: var(--text);
+}
+
+/* Zero-size marker at the very start of the page; "#top" links scroll here. */
+.page-top {
+  height: 0;
 }
 
 *,
@@ -73,6 +80,7 @@
 }
 
 html {
+  scroll-padding-top: var(--header-h);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -290,8 +298,10 @@ button {
 
 /* ---------- Header ---------- */
 
+/* Stays at the top while the page scrolls under it, slightly see-through with a blur behind. */
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 20;
   border-bottom: 1px solid var(--rule);
 }
@@ -443,7 +453,8 @@ button {
   position: absolute;
   top: calc(100% + 14px);
   left: -14px;
-  width: 340px;
+  width: max-content;
+  min-width: 200px;
   padding: 8px;
   background: var(--bg);
   border: 1px solid var(--rule-strong);
@@ -466,12 +477,13 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 }
 
 .site-nav .area-link {
-  display: grid;
-  grid-template-columns: 10px minmax(0, 1fr);
-  gap: 14px;
+  display: block;
   padding: 12px 14px;
   border-radius: 4px;
-  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-strong);
   transition: background-color 0.2s var(--ease);
 }
 
@@ -492,26 +504,9 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   background: var(--accent);
 }
 
-.area-link-body {
-  display: grid;
-  gap: 2px;
-}
-
-.area-link-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-strong);
-}
-
-.area-link-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-
 /* Desktop header bar: 48px tall, small bold capitals (matches the landing page's scale). */
 @media (min-width: 821px) {
-  .site-nav ul {
+  .site-nav > ul {
     gap: 48px;
   }
 
@@ -528,10 +523,158 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
     width: 10px;
     height: 10px;
   }
+
+  /* Hover: no underline; the other items fade back so the one under the pointer stands out. */
+  .site-nav a::after,
+  .nav-group-toggle::after {
+    display: none;
+  }
+
+  .site-nav > ul > li {
+    transition: opacity 0.35s var(--ease);
+  }
+
+  .site-nav > ul:has(> li:hover) > li:not(:hover),
+  .site-nav > ul:has(> li:focus-visible, > li :focus-visible) > li:not(:focus-within) {
+    opacity: 0.35;
+  }
+
+  /* The Focus areas menu fades and slides in, its items following a beat apart. */
+  .js .nav-group-panel,
+  .js .nav-group-panel:not(.is-open) {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.98);
+    transform-origin: top left;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.35s var(--ease),
+      visibility 0s linear 0.35s;
+  }
+
+  .js .nav-group-panel.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.4s var(--ease),
+      visibility 0s;
+  }
+
+  .js .nav-group-panel li {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.35s var(--ease);
+  }
+
+  .js .nav-group-panel.is-open li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .nav-group-panel.is-open li:nth-child(2) {
+    transition-delay: 0.06s;
+  }
+
+  .js .nav-group-panel.is-open li:nth-child(3) {
+    transition-delay: 0.12s;
+  }
+
+  /* Inside the menu, the same fade: the other area dims while one is pointed at. */
+  .site-nav .area-link {
+    transition:
+      background-color 0.3s var(--ease),
+      opacity 0.3s var(--ease);
+  }
+
+  .nav-group-panel ul:has(li:hover) li:not(:hover) .area-link {
+    opacity: 0.45;
+  }
+
+  .nav-group-toggle .arrow {
+    transition: transform 0.35s var(--ease);
+  }
+
+  /* The Focus areas menu in the same small type as the bar. */
+  .nav-group-panel {
+    top: calc(100% + 18px);
+    min-width: 180px;
+    padding: 6px;
+    background: rgba(15, 18, 16, 0.94);
+    border-color: var(--rule);
+  }
+
+  /* Bridges the gap above the panel, so moving the pointer down to it keeps the menu open. */
+  .nav-group-panel::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 18px;
+  }
+
+  .site-nav .area-link {
+    padding: 12px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 12px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
 }
 
 .site-header {
-  background: var(--surface);
+  background: rgba(15, 18, 16, 0.94);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .site-header {
+    background: rgba(15, 18, 16, 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+}
+
+/* The brand, and on focus-area pages the area's name beside it: "Broccoli Brain Lab / Gaming". */
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-sep {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+
+.brand-area {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--accent-bright);
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
+
+.brand-area:hover {
+  color: var(--accent-hot);
+}
+
+/* On narrow phones the area name takes the place of the brand's name; the logo still leads home. */
+@media (max-width: 480px) {
+  .has-area .brand-name {
+    display: none;
+  }
 }
 
 .brand-mark {
@@ -901,81 +1044,6 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   font-size: clamp(16px, 1.15vw, 18px);
   line-height: 1.5;
   color: var(--text);
-}
-
-/* ---------- Approach steps (home) ---------- */
-
-.steps {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px 40px;
-}
-
-.step {
-  padding-top: 18px;
-  border-top: 1px solid var(--rule);
-}
-
-.step-num {
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.step-title {
-  margin: 0;
-  font-size: clamp(18px, 1.45vw, 22px);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-  color: var(--text-strong);
-}
-
-.step-text {
-  margin-top: 6px;
-  font-size: clamp(16px, 1.15vw, 18px);
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.step-num + .step-title {
-  margin-top: 10px;
-}
-
-.topics-spaced {
-  margin-top: 32px;
-}
-
-/* ---------- Featured game (gaming) ---------- */
-
-.play {
-  padding: var(--section-space) 0;
-}
-
-.game-stage {
-  display: grid;
-  place-items: center;
-  max-width: 1080px;
-  aspect-ratio: 16 / 9;
-  margin-top: 40px;
-  background: var(--surface);
-  border: 1px dashed var(--rule-strong);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-/* While the game isn't in yet, a short placeholder instead of an empty 16:9 screen. */
-.game-stage:has(.game-stage-empty) {
-  aspect-ratio: auto;
-  min-height: 200px;
-}
-
-.game-stage-empty {
-  padding: 32px 24px;
-  text-align: center;
-  font-size: 16px;
-  color: var(--text-muted);
 }
 
 /* The logo at the centre of a hero artwork (the hub on the home page). */
@@ -2183,20 +2251,52 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   pointer-events: none;
 }
 
-.lp-rays {
+/* The faint ring of lines over every hero (LpHero's RingOverlay): lines between two ellipses, so the centre
+   is clear and the ring never reaches the hero's edges. Tilted; on load it turns a third of a circle, slowing
+   to a stop,
+   and then nothing in the hero moves (not on scroll, not on hover). */
+.lp-ring {
   position: absolute;
   inset: 0;
   z-index: 1;
   width: 100%;
   height: 100%;
-  stroke: #eef2ea;
-  stroke-width: 1;
-  opacity: 0.22;
+  overflow: visible;
   pointer-events: none;
 }
 
-.lp-rays line {
+.lp-ring line {
+  stroke: #eef2ea;
+  stroke-width: 1.6;
+  stroke-linecap: round;
   vector-effect: non-scaling-stroke;
+}
+
+/* Turns around the ring's own centre (the group's origin). */
+.lp-ring-spin {
+  transform-origin: 0 0;
+  opacity: 0.26;
+  animation: lp-ring-spin 3.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lp-ring-spin {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.94);
+  }
+  30% {
+    opacity: 0.26;
+  }
+  to {
+    opacity: 0.26;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-ring-spin {
+    animation: none;
+  }
 }
 
 .lp-hero-title {
@@ -2204,7 +2304,7 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   left: 0;
   bottom: 0;
   z-index: 2;
-  max-width: calc(100% - 450px);
+  max-width: calc(100% - 498px);
   padding: 0 var(--lp-gutter) 48px;
   font-size: clamp(56px, calc(12.74vw - 63.5px), 120px);
   font-weight: 400;
@@ -2217,13 +2317,50 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   display: block;
 }
 
+/* The headline's last word, picked out in the bright cool accent. */
+.lp-hero-title em {
+  font-style: normal;
+  color: var(--accent-pop);
+}
+
+/* The call-to-action card: inset from the corner with rounded edges; the paragraph, then each button on its
+   own full-width row. */
 .lp-hero-panel {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 24px;
+  bottom: 24px;
   z-index: 2;
   width: 450px;
-  padding: 24px 24px 48px;
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.lp-hero-panel .lp-actions {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.lp-hero-panel .lp-pill {
+  justify-content: space-between;
+  height: 46px;
+  padding-inline: 20px;
+}
+
+.lp-hero-panel .lp-pill.has-chip {
+  padding: 0 6px 0 20px;
+}
+
+.lp-hero-panel .lp-pill-chip {
+  width: 34px;
+  height: 34px;
+}
+
+/* Nothing in the hero moves once its ring has turned: the buttons only change colour on hover. */
+.lp-hero-panel .lp-pill:hover .lp-pill-chip {
+  transform: none;
 }
 
 /* Intro: the story stays in view on the left while four figures scroll on the right. */
@@ -2236,12 +2373,12 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 
 .lp-intro-main {
   position: sticky;
-  top: 0;
+  top: var(--header-h);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 48px;
-  min-height: 100svh;
+  min-height: calc(100svh - var(--header-h));
   padding: 48px var(--lp-gutter);
 }
 
@@ -2289,7 +2426,7 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   color: var(--paper-muted);
 }
 
-/* Process: emblem half, deep-green half with numbered steps. */
+/* Process: a charcoal panel half (team, industries), deep-green half with numbered steps. */
 
 .lp-process {
   display: grid;
@@ -2298,41 +2435,23 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   background: var(--deep);
 }
 
-.lp-process-art {
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: radial-gradient(closest-side, #18201a, var(--surface));
+.lp-aside {
+  padding: 48px var(--lp-gutter);
+  background: var(--surface);
 }
 
-.lp-process-art > * {
-  grid-area: 1 / 1;
+.lp-aside-lede {
+  max-width: 24em;
+  margin-top: 33px;
+  color: var(--text-faint);
 }
 
-.lp-orbits {
-  width: min(78%, 560px);
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1;
-  stroke-dasharray: 2 8;
-  stroke-linecap: round;
-  opacity: 0.6;
-}
-
-.lp-orbits circle {
-  vector-effect: non-scaling-stroke;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .lp-orbits {
-    animation: lp-turn 140s linear infinite;
-  }
-}
-
-@keyframes lp-turn {
-  to {
-    transform: rotate(360deg);
-  }
+/* Two by two, sized so the four portraits sit beside the steps without stretching the band. */
+.lp-members {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 16px;
+  max-width: 400px;
+  margin-top: 64px;
 }
 
 .lp-process-body {
@@ -2421,10 +2540,6 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   background: var(--surface);
 }
 
-.lp-team {
-  border-top: 1px solid var(--rule);
-}
-
 .lp-head {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2451,7 +2566,7 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 
 .lp-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 16px;
   margin-top: 115px;
 }
@@ -2489,26 +2604,22 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 }
 
 .lp-card-art {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 4 / 3;
   margin-top: 16px;
-  padding: 12%;
   overflow: hidden;
   background: var(--bg);
-  transition: background-color 0.3s var(--ease);
 }
 
-.lp-card-graph {
+/* Each area's illustration (components/landing/AreaArt.tsx): light for business, dark for gaming. */
+.lp-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.6s var(--ease);
 }
 
-.lp-card:hover .lp-card-art {
-  background: var(--surface-active);
-}
-
-.lp-card:hover .lp-card-graph {
-  transform: scale(1.05);
+.lp-card:hover .lp-art {
+  transform: scale(1.04);
 }
 
 .lp-card:hover .lp-card-title .arrow {
@@ -2519,11 +2630,63 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   outline: 1px solid var(--accent);
 }
 
-.lp-members {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 40px 16px;
-  max-width: none;
+/* A two-column list with hairlines, for the industries panel. */
+.lp-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+  max-width: 560px;
+  margin-top: 64px;
+}
+
+.lp-list-item {
+  padding: 16px 0 20px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.lp-list-title {
+  color: var(--text);
+}
+
+.lp-list-text {
+  margin-top: 3px;
+  color: #939393;
+}
+
+/* The featured-game stage: 16:9, with artwork and a note until the game is added. */
+.lp-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
   margin-top: 115px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.lp-stage-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lp-stage-note {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 900px;
+  background: var(--paper);
+  color: var(--paper-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 /* Closing statement: a full-height paper band, centred, framed by tick marks. */
@@ -2616,6 +2779,89 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   margin-top: 120px;
 }
 
+/* The email button and its panel of other ways to write to us (EmailPill). */
+.lp-email {
+  position: relative;
+  display: inline-flex;
+}
+
+.lp-email-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 5;
+  display: grid;
+  gap: 12px;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 16px 18px;
+  border: 1px solid var(--paper-rule);
+  border-radius: 16px;
+  background: #f7f8f3;
+  color: var(--paper-text);
+  box-shadow: 0 18px 40px rgba(20, 24, 21, 0.14);
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.3s var(--ease),
+    visibility 0s linear 0.3s;
+}
+
+.lp-email-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.3s var(--ease),
+    visibility 0s;
+}
+
+.lp-email-note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--paper-muted);
+}
+
+.lp-email-address {
+  color: var(--paper-text);
+  font-weight: 500;
+  user-select: all;
+}
+
+.lp-email-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lp-email-options a,
+.lp-email-options button {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--paper-rule);
+  border-radius: 900px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--paper-text);
+  transition:
+    background-color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.lp-email-options a:hover,
+.lp-email-options button:hover {
+  background: var(--paper);
+  border-color: #aab5a7;
+}
+
 .lp-actions-center {
   justify-content: center;
   margin-top: 16px;
@@ -2627,13 +2873,17 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
     letter-spacing: -3px;
   }
 
-  .lp-cards,
-  .lp-members {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 767px) {
+  /* Phones: the ring sits in the photo above the headline, centred (undoing the desktop shift to the right,
+     20 of the drawing's 1440 units) so it stays clear of both sides. */
+  .lp-ring {
+    inset: 3% 0 auto;
+    height: 62%;
+    transform: translateX(-1.39%);
+  }
+
   .lp-intro,
   .lp-process,
   .lp-areas,
@@ -2667,7 +2917,9 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   .lp-hero-panel {
     position: static;
     width: auto;
-    padding: 48px 24px;
+    margin: 12px;
+    padding: 28px 24px;
+    box-shadow: none;
   }
 
   .lp-intro,
@@ -2703,17 +2955,25 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
     min-height: 0;
   }
 
-  .lp-process-art {
-    aspect-ratio: 1;
-  }
-
   .lp-cards {
     grid-template-columns: 1fr;
     margin-top: 64px;
   }
 
-  .lp-members {
+  .lp-stage {
+    aspect-ratio: 4 / 5;
     margin-top: 64px;
+  }
+
+  .lp-list {
+    grid-template-columns: 1fr;
+    max-width: none;
+    margin-top: 48px;
+  }
+
+  .lp-members {
+    max-width: none;
+    margin-top: 48px;
   }
 
   .lp-closing {
@@ -2817,7 +3077,7 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 
 /* Between tablet and desktop the six nav items need tighter spacing to clear the brand. */
 @media (max-width: 1100px) and (min-width: 821px) {
-  .site-nav ul {
+  .site-nav > ul {
     gap: 28px;
   }
 }
@@ -3054,11 +3314,6 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   .area-icon-wide {
     width: 48px;
     height: 32px;
-  }
-
-  .steps {
-    grid-template-columns: 1fr;
-    gap: 20px;
   }
 
   .research-title {

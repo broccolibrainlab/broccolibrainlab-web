@@ -1,35 +1,27 @@
-import graph from "@/assets/data/business-graph.json";
-import type { RawGraph } from "@/lib/brainEngine";
+import Image from "next/image";
+import heroPhoto from "@/assets/images/hero-business.jpg";
 import { BUSINESS_SECTION, anchor } from "@/lib/site";
-import HeroGraph from "../HeroGraph";
-import { Arrow } from "../icons";
+import LpHero from "../landing/LpHero";
+import Pill from "../landing/Pill";
 
 export default function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-title">
-      <div className="container hero-grid">
-        <div className="hero-copy">
-          <p className="eyebrow eyebrow-rule">Business solutions across industries</p>
-          <h1 className="hero-title" id="hero-title">
-            <span className="hero-line">Built around</span>
-            <span className="hero-line hero-line-accent">your business.</span>
-          </h1>
-          <p className="hero-lede">
-            Practical software, data and automation, shaped around how your organisation&nbsp;works.
-          </p>
-          <div className="hero-actions">
-            <a className="button-primary" href={anchor(BUSINESS_SECTION.services)}>
-              Explore our services
-              <Arrow />
-            </a>
-            <a className="link-underline" href={anchor(BUSINESS_SECTION.contact)}>
-              Start a conversation
-            </a>
-          </div>
-        </div>
-
-        <HeroGraph graph={graph as RawGraph} />
-      </div>
-    </section>
+    <LpHero
+      overlay
+      media={
+        // Photo: "Man standing in front of people sitting beside table with laptop computers", Unsplash (gMsnXqILjp4), Unsplash Licence.
+        <Image className="lp-hero-photo" src={heroPhoto} alt="A team around a large table with laptops, listening to a colleague present." priority sizes="100vw" />
+      }
+      title={["Built around", "your business."]}
+      lede={<>Practical software, data and automation, shaped around how your organisation&nbsp;works.</>}
+      actions={
+        <>
+          <Pill href={anchor(BUSINESS_SECTION.services)} chip>
+            Explore our services
+          </Pill>
+          <Pill href={anchor(BUSINESS_SECTION.contact)}>Start a conversation</Pill>
+        </>
+      }
+    />
   );
 }

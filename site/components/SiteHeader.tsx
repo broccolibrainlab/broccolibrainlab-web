@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MOBILE_NAV_QUERY, NAV_ITEMS, PAGE, SITE, type Area } from "@/lib/site";
+import { ALL_AREAS, MOBILE_NAV_QUERY, NAV_ITEMS, PAGE, SITE, type Area } from "@/lib/site";
 import { Arrow } from "./icons";
 import LogoMark from "./LogoMark";
 import SmartLink, { trimSlash, useCurrentPath } from "./SmartLink";
@@ -13,6 +13,21 @@ function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) 
   const [open, setOpen] = useState(false);
   const groupRef = useRef<HTMLLIElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<number | undefined>(undefined);
+
+  // On desktop the menu also opens while the pointer is over it. A short delay on leaving lets the pointer
+  // cross the gap between the button and the panel without the menu closing.
+  const hoverable = () => window.matchMedia(`(hover: hover) and (not ${MOBILE_NAV_QUERY})`).matches;
+  const onPointerEnter = () => {
+    if (!hoverable()) return;
+    window.clearTimeout(closeTimer.current);
+    setOpen(true);
+  };
+  const onPointerLeave = () => {
+    if (!hoverable()) return;
+    closeTimer.current = window.setTimeout(() => setOpen(false), 160);
+  };
+  useEffect(() => () => window.clearTimeout(closeTimer.current), []);
   const inArea = areas.some((area) => {
     const href = trimSlash(area.href);
     return current === href || current.startsWith(`${href}/`);
@@ -43,7 +58,7 @@ function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) 
   }, [open]);
 
   return (
-    <li className="nav-group" ref={groupRef}>
+    <li className="nav-group" ref={groupRef} onMouseEnter={onPointerEnter} onMouseLeave={onPointerLeave}>
       <button
         ref={buttonRef}
         className={inArea ? "nav-group-toggle is-current" : "nav-group-toggle"}
@@ -63,11 +78,7 @@ function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) 
           {areas.map((area) => (
             <li key={area.key}>
               <SmartLink className={`area-link tone-${area.key}`} href={area.href} markCurrent>
-                <span className="area-link-dot" aria-hidden="true" />
-                <span className="area-link-body">
-                  <span className="area-link-title">{area.label}</span>
-                  <span className="area-link-text">{area.summary}</span>
-                </span>
+                {area.label}
               </SmartLink>
             </li>
           ))}
@@ -77,7 +88,8 @@ function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) 
   );
 }
 
-export default function SiteHeader() {
+export default function SiteHeader({ area: areaKey }: { area?: Area["key"] }) {
+  const area = areaKey ? ALL_AREAS.find((a) => a.key === areaKey) : undefined;
   const current = useCurrentPath();
   const onHome = current === PAGE.home;
   const [open, setOpen] = useState(false);
@@ -137,19 +149,31 @@ export default function SiteHeader() {
   };
 
   return (
-    <header className="site-header" id="top">
-      <div className="container header-inner">
-        {onHome ? (
-          <a className="brand" href="#top">
-            <LogoMark className="brand-mark" size={32} />
-            <span className="brand-name">{SITE.name}</span>
-          </a>
-        ) : (
-          <Link className="brand" href={PAGE.home}>
-            <LogoMark className="brand-mark" size={32} />
-            <span className="brand-name">{SITE.name}</span>
-          </Link>
-        )}
+    <header className="site-header">
+      <div className={area ? "container header-inner has-area" : "container header-inner"}>
+        <div className="brand-group">
+          {onHome ? (
+            <a className="brand" href="#top">
+              <LogoMark className="brand-mark" size={32} />
+              <span className="brand-name">{SITE.name}</span>
+            </a>
+          ) : (
+            <Link className="brand" href={PAGE.home}>
+              <LogoMark className="brand-mark" size={32} />
+              <span className="brand-name">{SITE.name}</span>
+            </Link>
+          )}
+          {area && (
+            <>
+              <span className="brand-sep" aria-hidden="true">
+                /
+              </span>
+              <SmartLink className="brand-area" href={area.href} markCurrent>
+                {area.label}
+              </SmartLink>
+            </>
+          )}
+        </div>
 
         <button
           ref={toggleRef}
