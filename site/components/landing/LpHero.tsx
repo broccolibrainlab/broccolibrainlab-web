@@ -37,7 +37,7 @@ function RingOverlay() {
   );
 }
 
-/** Wraps the line's last word (not its closing punctuation) in <em>, which the CSS sets in --accent-pop. */
+/** Wraps the line's last word (not its closing punctuation) in <em>, which the CSS sets in the logo's colour. */
 function accentLastWord(line: string) {
   const match = line.match(/^(.*\s)?(\S+?)([.,!?;:]*)$/);
   if (!match) return line;

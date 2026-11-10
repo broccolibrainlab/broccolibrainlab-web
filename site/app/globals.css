@@ -59,8 +59,6 @@
   --text-faint: #8b948d;
   --rule: #2c352f;
   --rule-strong: #3a443d;
-  /* A cool aqua-mint beside the sage: the same cool temperature, much brighter, for one word in each hero. */
-  --accent-pop: #5eead4;
 }
 
 .page-theme {
@@ -306,11 +304,21 @@ button {
   border-bottom: 1px solid var(--rule);
 }
 
+/* The bar runs the full width of the window, with the same inset on both sides: the landing pages' gutter
+   (48px, 24px on phones), so the brand lines up with the hero headline. */
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: none;
   height: var(--header-h);
+  padding-inline: 48px;
+}
+
+@media (max-width: 767px) {
+  .header-inner {
+    padding-inline: 24px;
+  }
 }
 
 .brand {
@@ -606,7 +614,7 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
     top: calc(100% + 18px);
     min-width: 180px;
     padding: 6px;
-    background: rgba(15, 18, 16, 0.94);
+    background: rgba(30, 33, 31, 0.96);
     border-color: var(--rule);
   }
 
@@ -631,12 +639,12 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 }
 
 .site-header {
-  background: rgba(15, 18, 16, 0.94);
+  background: rgba(30, 33, 31, 0.9);
 }
 
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .site-header {
-    background: rgba(15, 18, 16, 0.72);
+    background: rgba(30, 33, 31, 0.66);
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
     backdrop-filter: blur(14px) saturate(1.2);
   }
@@ -2317,10 +2325,10 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   display: block;
 }
 
-/* The headline's last word, picked out in the bright cool accent. */
+/* The headline's last word, picked out in the logo's sage (.logo-mark is painted in --accent too). */
 .lp-hero-title em {
   font-style: normal;
-  color: var(--accent-pop);
+  color: var(--accent);
 }
 
 /* The call-to-action card: inset from the corner with rounded edges; the paragraph, then each button on its
