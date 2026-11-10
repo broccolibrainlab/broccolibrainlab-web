@@ -18,6 +18,7 @@ const ARROW_PATHS = {
   left: "M14 8H2.5M7 3.5 2.5 8 7 12.5",
   up: "M8 13.5V2.5M3.5 7 8 2.5 12.5 7",
   external: "M4.5 11.5 11.5 4.5M5.5 4.5h6v6",
+  down: "M4 6.5 8 10.5 12 6.5",
 };
 
 export function Arrow({ direction = "right" }: { direction?: keyof typeof ARROW_PATHS }) {
@@ -56,6 +57,92 @@ export function PeopleIcon() {
       <circle cx="56.5" cy="18.5" r="5.5" />
       <path d="M68 44v-4c0-5.6-4.4-9.5-10-9.5-3 0-5.4 1-7.2 2.6" />
       <path d="M4 44h64" />
+    </Svg>
+  );
+}
+
+// ---- Business services ----
+
+/** Strategy & discovery: a compass. */
+export function CompassIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="27" />
+      <path d="M32 5v6M32 53v6M5 32h6M53 32h6" />
+      <path d="m41.5 22.5-6.2 12.8-12.8 6.2 6.2-12.8z" />
+      <circle cx="32" cy="32" r="1.6" />
+    </Svg>
+  );
+}
+
+/** Software & platforms: a browser window with code brackets. */
+export function PlatformIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <rect x="4" y="9" width="56" height="46" rx="4" />
+      <path d="M4 20h56" />
+      <path d="M10.5 14.5h.01M16 14.5h.01M21.5 14.5h.01" />
+      <path d="m25 30-7 7 7 7M39 30l7 7-7 7M35 28l-6 18" />
+    </Svg>
+  );
+}
+
+/** Data & automation: bars with a rising trend. */
+export function InsightIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <path d="M5 59h54" />
+      <path d="M11 59V42h9v17M27.5 59V33h9v26M44 59V22h9v37" />
+      <path d="m8 31 13-11 9 6 21-18" />
+      <path d="M43 8h8v8" />
+    </Svg>
+  );
+}
+
+// ---- Gaming ----
+
+/** Game design: a controller. */
+export function ControllerIcon() {
+  return (
+    <Svg className="area-icon area-icon-wide" viewBox="0 0 72 48">
+      <path d="M22 6h28c8 0 13 4.5 15.5 12l4.2 14.6c1.6 6-1.5 11.4-7 11.4-3.3 0-5.7-1.8-7.8-4.6L51 34H21l-3.9 5.4C15 42.2 12.6 44 9.3 44c-5.5 0-8.6-5.4-7-11.4L6.5 18C9 10.5 14 6 22 6z" />
+      <path d="M19 17v10M14 22h10" />
+      <circle cx="50" cy="18" r="1.8" />
+      <circle cx="56" cy="24" r="1.8" />
+      <circle cx="44" cy="24" r="1.8" />
+      <circle cx="50" cy="30" r="1.8" />
+    </Svg>
+  );
+}
+
+/** Play & cognition: a target with a cursor, for attention and decisions in play. */
+export function FocusIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <circle cx="28" cy="28" r="23" />
+      <circle cx="28" cy="28" r="14" />
+      <circle cx="28" cy="28" r="5" />
+      <path d="m37 37 19.5 7-7.5 3.5-3.5 7.5z" />
+    </Svg>
+  );
+}
+
+/** Envelope, for email links. */
+export function MailIcon() {
+  return (
+    <Svg className="mail-icon" viewBox="0 0 20 16">
+      <rect x="1.5" y="1.5" width="17" height="13" rx="2" />
+      <path d="m2.5 3 7.5 6 7.5-6" />
+    </Svg>
+  );
+}
+
+/** Head-and-shoulders outline: the placeholder for a team photo. */
+export function PersonIcon() {
+  return (
+    <Svg className="person-icon" viewBox="0 0 80 80">
+      <circle cx="40" cy="29" r="14" />
+      <path d="M14 76v-4c0-14.4 11.6-24 26-24s26 9.6 26 24v4" />
     </Svg>
   );
 }

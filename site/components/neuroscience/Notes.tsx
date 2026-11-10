@@ -1,5 +1,5 @@
-import { SECTION } from "@/lib/site";
-import SplitSection from "./SplitSection";
+import { NEURO_SECTION } from "@/lib/site";
+import SplitSection from "../SplitSection";
 
 const TOPICS = [
   {
@@ -22,7 +22,7 @@ const TOPICS = [
 
 export default function Notes() {
   return (
-    <SplitSection id={SECTION.notes} eyebrow="Notes" title="What we’re reading and discussing.">
+    <SplitSection id={NEURO_SECTION.notes} eyebrow="Notes" title="What we’re reading and discussing.">
       <ol className="topics" role="list">
         {TOPICS.map((topic, index) => (
           <li className="topic" key={topic.title}>

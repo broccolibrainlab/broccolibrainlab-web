@@ -1,30 +1,26 @@
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Exploring from "@/components/Exploring";
-import Hero from "@/components/Hero";
-import InPageFocus from "@/components/InPageFocus";
-import Notes from "@/components/Notes";
-import ResearchStrip from "@/components/ResearchStrip";
-import SiteFooter from "@/components/SiteFooter";
-import SiteHeader from "@/components/SiteHeader";
+import type { Viewport } from "next";
+import PageShell from "@/components/PageShell";
+import Approach from "@/components/business/Approach";
+import Contact from "@/components/business/Contact";
+import Hero from "@/components/business/Hero";
+import Industries from "@/components/business/Industries";
+import Interests from "@/components/business/Interests";
+import Services from "@/components/business/Services";
+import Team from "@/components/business/Team";
+import { THEME_COLOR } from "@/lib/site";
+
+export const viewport: Viewport = { themeColor: THEME_COLOR.business };
 
 export default function Home() {
   return (
-    <>
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <SiteHeader />
-      <main id="main" tabIndex={-1}>
-        <Hero />
-        <Exploring />
-        <ResearchStrip />
-        <About />
-        <Notes />
-        <Contact />
-      </main>
-      <SiteFooter />
-      <InPageFocus />
-    </>
+    <PageShell theme="business">
+      <Hero />
+      <Services />
+      <Interests />
+      <Industries />
+      <Approach />
+      <Team />
+      <Contact />
+    </PageShell>
   );
 }

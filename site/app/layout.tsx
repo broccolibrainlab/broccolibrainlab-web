@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { SITE } from "@/lib/site";
+import { SITE, THEME_COLOR } from "@/lib/site";
 import "./globals.css";
 
 // Self-hosted Inter (variable: weight + optical size axes).
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#141815", // matches --bg in globals.css
+  themeColor: THEME_COLOR.business, // pages set their own palette's colour
   colorScheme: "dark",
 };
 

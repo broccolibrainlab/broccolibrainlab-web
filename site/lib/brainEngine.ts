@@ -1,5 +1,6 @@
 /*
- * Interactive neuron-tree animation for the hero.
+ * Interactive line-art animation for the page heroes (the brain on the neuroscience page, and the
+ * generated artworks on the other pages; see scripts/make-hero-graphs.mjs).
  *
  * The geometry comes from tracing the approved hero artwork (assets/data/brain-graph.json),
  * so every pulse travels along the real curves of the drawing. Coordinates are in the
@@ -18,18 +19,25 @@ export interface RawGraph {
   verts: number[][];
   edges: { a: number; b: number; p: number[][] }[];
   nodes: { x: number; y: number; r: number; v: number }[];
+  /** Verts where the intro starts. Default: every vert with one edge and no node. */
+  roots?: number[];
+  /** Optional circle where the page draws the logo (artwork space). */
+  badge?: { x: number; y: number; r: number };
+  /** Optional captions, drawn as HTML over the artwork (centred on x, y in artwork space). */
+  labels?: { text: string; x: number; y: number }[];
 }
 
 export type RGB = readonly [number, number, number];
 
-/** Line and node colours. Defaults mirror --sage / --sage-bright; prefer readCssPalette(). */
+/** Line, node and highlight colours. Defaults are the neuroscience palette; prefer readCssPalette(). */
 export interface Palette {
   sage: RGB;
   bright: RGB;
+  /** highlight for firing pulses */
+  hot: RGB;
 }
 
-const DEFAULT_PALETTE: Palette = { sage: [164, 199, 174], bright: [182, 214, 186] };
-const HOT: RGB = [226, 248, 230]; // highlight for firing pulses; not a page colour
+const DEFAULT_PALETTE: Palette = { sage: [164, 199, 174], bright: [182, 214, 186], hot: [226, 248, 230] };
 
 const hexToRgb = (hex: string): RGB | null => {
   const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
@@ -38,12 +46,13 @@ const hexToRgb = (hex: string): RGB | null => {
   return [n >> 16, (n >> 8) & 255, n & 255];
 };
 
-/** Reads the brand colours from the page's CSS custom properties so the palette has one source. */
-export function readCssPalette(): Palette {
-  const style = getComputedStyle(document.documentElement);
+/** Reads the page palette (--accent, --accent-bright, --accent-hot) as seen by `el`, so it has one source. */
+export function readCssPalette(el: Element = document.documentElement): Palette {
+  const style = getComputedStyle(el);
   return {
-    sage: hexToRgb(style.getPropertyValue("--sage")) ?? DEFAULT_PALETTE.sage,
-    bright: hexToRgb(style.getPropertyValue("--sage-bright")) ?? DEFAULT_PALETTE.bright,
+    sage: hexToRgb(style.getPropertyValue("--accent")) ?? DEFAULT_PALETTE.sage,
+    bright: hexToRgb(style.getPropertyValue("--accent-bright")) ?? DEFAULT_PALETTE.bright,
+    hot: hexToRgb(style.getPropertyValue("--accent-hot")) ?? DEFAULT_PALETTE.hot,
   };
 }
 
@@ -134,7 +143,7 @@ export function mountBrain(
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
   const host = canvas.parentElement as HTMLElement;
-  const { sage: SAGE, bright: BRIGHT } = palette;
+  const { sage: SAGE, bright: BRIGHT, hot: HOT } = palette;
 
   const W = raw.w;
   const H = raw.h;
@@ -149,10 +158,12 @@ export function mountBrain(
   nodes.forEach((n, i) => {
     if (n.v >= 0) nodeAtVertex.set(n.v, i);
   });
-  const roots: number[] = [];
-  vEdges.forEach((list, v) => {
-    if (list.length === 1 && !nodeAtVertex.has(v)) roots.push(v);
-  });
+  const roots: number[] = raw.roots ? [...raw.roots] : [];
+  if (!raw.roots) {
+    vEdges.forEach((list, v) => {
+      if (list.length === 1 && !nodeAtVertex.has(v)) roots.push(v);
+    });
+  }
 
   // ---- geometry helpers -------------------------------------------------
   const idxAt = (e: Edge, d: number) => {
@@ -319,10 +330,13 @@ export function mountBrain(
 
   const startIntro = () => {
     const burst = newBurst(false, true);
+    // Leave each root along every edge (a traced root has just one).
     roots.forEach((v) => {
-      const e = vEdges[v][0];
-      burst.visited.add(e);
-      enter(v, e, { speed: INTRO_SPEED, strength: 1, hops: 0 }, burst);
+      for (const e of vEdges[v]) {
+        if (burst.visited.has(e)) continue;
+        burst.visited.add(e);
+        enter(v, e, { speed: INTRO_SPEED, strength: 1, hops: 0 }, burst);
+      }
     });
   };
 
@@ -332,7 +346,8 @@ export function mountBrain(
     if (fromNode) v = nodes[Math.floor(Math.random() * nodes.length)].v;
     else v = roots[Math.floor(Math.random() * roots.length)];
     if (v === undefined || v < 0) return;
-    const e = vEdges[v][0];
+    const out = vEdges[v];
+    const e = out[Math.floor(Math.random() * out.length)];
     enter(v, e, { speed: AMBIENT_SPEED * (0.85 + Math.random() * 0.35), strength: 0.9, hops: 0, visited: new Set([e]) }, null);
   };
 

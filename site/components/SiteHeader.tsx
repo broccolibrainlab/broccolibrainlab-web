@@ -1,35 +1,84 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MOBILE_NAV_QUERY, NAV_ITEMS, PAGE, SITE, anchor, type NavItem } from "@/lib/site";
+import { MOBILE_NAV_QUERY, NAV_ITEMS, PAGE, SITE, type Area } from "@/lib/site";
+import { Arrow } from "./icons";
 import LogoMark from "./LogoMark";
+import SmartLink, { trimSlash, useCurrentPath } from "./SmartLink";
 
-const trimSlash = (path: string) => path.replace(/\/+$/, "") || "/";
+/** "Interested areas": a disclosure menu on desktop, a plain labelled group inside the mobile menu. */
+function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) {
+  const current = useCurrentPath();
+  const [open, setOpen] = useState(false);
+  const groupRef = useRef<HTMLLIElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inArea = areas.some((area) => {
+    const href = trimSlash(area.href);
+    return current === href || current.startsWith(`${href}/`);
+  });
 
-function NavLink({ item, onHome, current }: { item: NavItem; onHome: boolean; current: string }) {
-  // Section links stay plain in-page anchors on the home page (InPageFocus relies on that);
-  // from any other page they lead back to the home page section.
-  if ("section" in item) {
-    return onHome ? (
-      <a href={anchor(item.section)}>{item.label}</a>
-    ) : (
-      <Link href={`${PAGE.home}${anchor(item.section)}`}>{item.label}</Link>
-    );
-  }
-  // "page" on the page itself; "true" on pages inside it (e.g. a tool under Resources).
-  const page = trimSlash(item.page);
-  const ariaCurrent = page === current ? "page" : current.startsWith(`${page}/`) ? "true" : undefined;
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+    const onPointer = (event: MouseEvent) => {
+      if (!groupRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onFocus = (event: FocusEvent) => {
+      if (!groupRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("click", onPointer);
+    document.addEventListener("focusin", onFocus);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("click", onPointer);
+      document.removeEventListener("focusin", onFocus);
+    };
+  }, [open]);
+
   return (
-    <Link href={item.page} aria-current={ariaCurrent}>
-      {item.label}
-    </Link>
+    <li className="nav-group" ref={groupRef}>
+      <button
+        ref={buttonRef}
+        className={inArea ? "nav-group-toggle is-current" : "nav-group-toggle"}
+        type="button"
+        aria-expanded={open}
+        aria-controls="areas-menu"
+        onClick={() => setOpen(!open)}
+      >
+        {label}
+        <Arrow direction="down" />
+      </button>
+      <p className="nav-group-label" id="areas-label">
+        {label}
+      </p>
+      <div className={open ? "nav-group-panel is-open" : "nav-group-panel"} id="areas-menu">
+        <ul aria-labelledby="areas-label" onClick={(event) => (event.target as HTMLElement).closest("a") && setOpen(false)}>
+          {areas.map((area) => (
+            <li key={area.key}>
+              <SmartLink className={`area-link tone-${area.key}`} href={area.href} markCurrent>
+                <span className="area-link-dot" aria-hidden="true" />
+                <span className="area-link-body">
+                  <span className="area-link-title">{area.label}</span>
+                  <span className="area-link-text">{area.summary}</span>
+                </span>
+              </SmartLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </li>
   );
 }
 
 export default function SiteHeader() {
-  const current = trimSlash(usePathname());
+  const current = useCurrentPath();
   const onHome = current === PAGE.home;
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -125,11 +174,15 @@ export default function SiteHeader() {
           onClick={onNavClick}
         >
           <ul>
-            {NAV_ITEMS.map((item) => (
-              <li key={item.label}>
-                <NavLink item={item} onHome={onHome} current={current} />
-              </li>
-            ))}
+            {NAV_ITEMS.map((item) =>
+              "areas" in item ? (
+                <AreasMenu key={item.label} label={item.label} areas={item.areas} />
+              ) : (
+                <li key={item.label}>
+                  <SmartLink href={item.href}>{item.label}</SmartLink>
+                </li>
+              ),
+            )}
           </ul>
         </nav>
       </div>

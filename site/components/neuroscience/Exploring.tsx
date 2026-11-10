@@ -1,5 +1,5 @@
-import { SECTION } from "@/lib/site";
-import { HeadIcon, PeopleIcon, WaveIcon } from "./icons";
+import { NEURO_SECTION } from "@/lib/site";
+import { HeadIcon, PeopleIcon, WaveIcon } from "../icons";
 
 const AREAS = [
   {
@@ -21,7 +21,7 @@ const AREAS = [
 
 export default function Exploring() {
   return (
-    <section className="exploring" id={SECTION.exploring} aria-labelledby="exploring-title">
+    <section className="exploring" id={NEURO_SECTION.exploring} aria-labelledby="exploring-title">
       <div className="container">
         <div className="section-head">
           <h2 className="exploring-title" id="exploring-title">

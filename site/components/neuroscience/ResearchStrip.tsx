@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SECTION } from "@/lib/site";
-import { Arrow } from "./icons";
+import { NEURO_SECTION } from "@/lib/site";
+import { Arrow } from "../icons";
 
 const FACTS = [
   { term: "Status", detail: "In design" },
@@ -15,7 +15,7 @@ export default function ResearchStrip() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="research" id={SECTION.research} aria-labelledby="research-title">
+    <section className="research" id={NEURO_SECTION.research} aria-labelledby="research-title">
       <div className="container">
         <div className="research-strip">
           <div className="research-heading">

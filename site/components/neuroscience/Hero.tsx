@@ -1,6 +1,9 @@
-import HeroBrain from "./HeroBrain";
-import { SECTION, anchor } from "@/lib/site";
-import { Arrow } from "./icons";
+import graph from "@/assets/data/brain-graph.json";
+import heroBrain from "@/assets/images/hero-brain.png";
+import type { RawGraph } from "@/lib/brainEngine";
+import { NEURO_SECTION, anchor } from "@/lib/site";
+import HeroGraph from "../HeroGraph";
+import { Arrow } from "../icons";
 
 export default function Hero() {
   return (
@@ -14,17 +17,17 @@ export default function Hero() {
           </h1>
           <p className="hero-lede">Exploring cognition, memory and EEG through research and shared&nbsp;learning.</p>
           <div className="hero-actions">
-            <a className="button-primary" href={anchor(SECTION.exploring)}>
+            <a className="button-primary" href={anchor(NEURO_SECTION.exploring)}>
               Explore our work
               <Arrow />
             </a>
-            <a className="link-underline" href={anchor(SECTION.about)}>
+            <a className="link-underline" href={anchor(NEURO_SECTION.about)}>
               Meet the team
             </a>
           </div>
         </div>
 
-        <HeroBrain />
+        <HeroGraph graph={graph as RawGraph} fallback={heroBrain} />
       </div>
     </section>
   );

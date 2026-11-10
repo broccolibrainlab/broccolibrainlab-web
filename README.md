@@ -1,6 +1,6 @@
 # Broccoli Brain Lab
 
-Website for Broccoli Brain Lab, a student-led group exploring cognition, memory and EEG.
+Website for Broccoli Brain Lab: business solutions across different domains, plus the areas we keep learning about — the Neuroscience Lab and Gaming.
 *Observe, Question, Explore.*
 
 ## Repository layout

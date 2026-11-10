@@ -1,7 +1,5 @@
-import type { SectionId } from "@/lib/site";
-
 type SplitSectionProps = {
-  id: SectionId;
+  id: string;
   eyebrow: string;
   title: string;
   children: React.ReactNode;

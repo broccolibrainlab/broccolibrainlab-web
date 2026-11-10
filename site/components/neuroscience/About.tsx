@@ -1,10 +1,11 @@
-import { SECTION, SITE } from "@/lib/site";
-import LogoMark from "./LogoMark";
-import SplitSection from "./SplitSection";
+import Link from "next/link";
+import { HOME_SECTION, NEURO_SECTION, PAGE, SITE, sectionHref } from "@/lib/site";
+import LogoMark from "../LogoMark";
+import SplitSection from "../SplitSection";
 
 export default function About() {
   return (
-    <SplitSection id={SECTION.about} eyebrow="About the group" title="Students learning about the brain, together.">
+    <SplitSection id={NEURO_SECTION.about} eyebrow="About the group" title="Students learning about the brain, together.">
       <p className="prose-lead">
         {SITE.name} is a group of undergraduate students curious about the human brain. We’re learning about
         cognition, memory and EEG together.
@@ -27,7 +28,11 @@ export default function About() {
       <div className="team-note" id="team">
         <h3 className="minor-title">The team</h3>
         <p className="prose">
-          We’re a small group of undergraduates. Individual member introductions will be added here soon.
+          We’re a small group of undergraduates. Individual introductions are on the way; see{" "}
+          <Link className="inline-link" href={sectionHref(PAGE.home, HOME_SECTION.team)}>
+            the team
+          </Link>
+          .
         </p>
       </div>
     </SplitSection>
