@@ -6,7 +6,8 @@ A Next.js app (App Router, TypeScript) with a dark theme only. It builds to a fu
 site/
 ├── app/
 │   ├── layout.tsx         <html>, metadata, self-hosted Inter via next/font
-│   ├── page.tsx           home: business solutions (/)
+│   ├── page.tsx           home: where people connect (/), with the focus areas and the team
+│   ├── business/          Business Solutions (/business/), a focus area
 │   ├── neuroscience/      the Neuroscience Lab (/neuroscience/), its Resources and the Saliency tool
 │   ├── gaming/            the Gaming page (/gaming/), with the slot for the featured game
 │   ├── resources/         old URLs; forward to /neuroscience/resources/…
@@ -14,17 +15,18 @@ site/
 │   └── fonts/, icon.png, apple-icon.png
 ├── components/
 │   ├── PageShell.tsx      every page's frame: palette, header, area bar, main, footer
-│   ├── SiteHeader.tsx     header, "Interested areas" menu and accessible mobile menu (client)
-│   ├── AreaNav.tsx        the secondary bar on interested-area pages
+│   ├── SiteHeader.tsx     header, "Focus areas" menu and accessible mobile menu (client)
+│   ├── AreaNav.tsx        the secondary bar on focus-area pages
 │   ├── SmartLink.tsx      section links that stay in-page on their own page (client)
 │   ├── HeroGraph.tsx      animated line artwork for each hero, with a no-JS fallback (client)
 │   ├── SplitSection.tsx   shared label + heading / content layout
-│   ├── business/          home sections: Hero, Services, Interests, Industries, Approach, Contact
+│   ├── home/              home sections: Hero, About, FocusAreas, HowItWorks, Team, Contact
+│   ├── business/          business sections: Hero, Services, Industries, Approach, Contact
 │   ├── neuroscience/      lab sections: Hero, Exploring, ResearchStrip, About, Notes, Contact
 │   ├── gaming/            gaming sections: Hero, Play, Exploring, Contact
 │   ├── ResourceList.tsx, saliency/, MovedPage.tsx, InPageFocus.tsx, LogoMark.tsx, icons.tsx
 ├── lib/
-│   ├── site.ts            name, LinkedIn URL, routes, palettes' theme colours, section ids, nav, interested areas
+│   ├── site.ts            name, LinkedIn URL, routes, palettes' theme colours, section ids, nav, focus areas
 │   ├── resources.ts       the tools listed on the Resources page
 │   ├── brainEngine.ts     framework-free canvas animation used by every hero
 │   └── saliency*.ts       the saliency models, stimuli and drawing
@@ -32,7 +34,7 @@ site/
 │   └── make-hero-graphs.mjs  generates business-graph.json and gaming-graph.json
 ├── assets/
 │   ├── images/            hero-brain.png, logo-mark.png
-│   └── data/              brain-graph.json (traced), business-graph.json, gaming-graph.json (generated)
+│   └── data/              brain-graph.json (traced); home-, business- and gaming-graph.json (generated)
 └── next.config.ts         static export; optional base path; images served unmodified
 ```
 
@@ -74,16 +76,16 @@ For a user site (`https://<user>.github.io/`) or a custom domain, build without 
 
 ## Editing
 
-- **Site name, tagline, LinkedIn link, navigation, interested areas:** `lib/site.ts`. Every component reads them from there. To add an interested area, add it to `AREAS` and `AREA_NAV`, give it a palette in `globals.css` and a `Theme`, and create its page with `<PageShell theme="…" area="…">`.
-- **Palettes:** each area has its own block at the top of `app/globals.css` (business: brass, neuroscience: sage, gaming: violet). Components only use the shared tokens (`--accent`, `--bg`, `--rule`, …), so layout stays identical across pages. If you change a `--bg`, also update `THEME_COLOR` in `lib/site.ts`.
-- **Hero artworks:** the brain is traced from the approved comp; the home page's industry map (a hub wired to six industry icons, with HTML labels and the logo in the hub) and the gaming controller come from `scripts/make-hero-graphs.mjs` (`node scripts/make-hero-graphs.mjs` regenerates them).
+- **Site name, tagline, LinkedIn link, navigation, focus areas:** `lib/site.ts`. Every component reads them from there. To add a focus area, add it to `AREAS` and `AREA_NAV`, give it a palette in `globals.css` and a `Theme`, and create its page with `<PageShell theme="…" area="…">`.
+- **Palettes:** each area has its own block at the top of `app/globals.css` (home: sky blue, business: brass, neuroscience: sage, gaming: violet). Components only use the shared tokens (`--accent`, `--bg`, `--rule`, …), so layout stays identical across pages. If you change a `--bg`, also update `THEME_COLOR` in `lib/site.ts`.
+- **Hero artworks:** the brain is traced from the approved comp; the home page's people-around-the-globe network, the Business Solutions industry map (a hub wired to six industry icons, with HTML labels and the logo in the hub) and the gaming controller come from `scripts/make-hero-graphs.mjs` (`node scripts/make-hero-graphs.mjs` regenerates them).
 - **Featured game:** put the game (or an `<iframe>` of its build) inside `.game-stage` in `components/gaming/Play.tsx` and update its `FACTS`.
 - **Section copy:** in each section's component in `components/`.
 - **Logo colour:** `LogoMark` draws the supplied PNG as a mask over `--accent`, so the mark takes each page's palette automatically.
 - **Industries:** the list in `components/business/Industries.tsx` and the icons in the hero artwork show the same six; change both together.
 - **Colours, spacing, type scale:** the tokens are at the top of `app/globals.css` (`--bg`, `--accent`, `--text`, `--gutter`, …). The hero canvas reads `--accent`, `--accent-bright` and `--accent-hot` at runtime.
 - **Mobile breakpoint:** `820px` is used in `app/globals.css` and in `MOBILE_NAV_QUERY` in `lib/site.ts`. Change both together.
-- **Team:** the Team section on the home page reads `lib/team.ts`. Fill in each entry's `name`, `role`, optional `linkedin`, and `photo` (a file you put in `public/team/`, portrait 4:5). Entries without a name show as placeholder cards.
+- **Team:** the Team section on the home page (`components/home/Team.tsx`) reads `lib/team.ts`. Fill in each entry's `name`, `role`, optional `linkedin`, and `photo` (a file you put in `public/team/`, portrait 4:5). Entries without a name show as placeholder cards.
 - **Contact email:** `SITE.email` in `lib/site.ts`. Every contact section links to it with `mailto:`, so it opens the visitor's own mail app, addressed to us, with a subject saying which page they came from.
 - **Resources (tools):** add an entry to `RESOURCES` in `lib/resources.ts` with a `title`, a short `description`, an `href` and optional `tags`. The `href` can be a full external URL (a GitHub repo, a hosted app; opens in a new tab) or a page on this site. To host a tool on the site itself, create `app/neuroscience/resources/<tool-name>/page.tsx` and use `href: "/neuroscience/resources/<tool-name>/"`. While the list is empty, the page shows a "coming soon" message.
 - **Saliency tool:** the models live in `lib/saliency.ts` and run entirely in the browser; images are never uploaded. Every model change should keep `npm test` passing: it checks that each model picks out the odd item in the sample displays at all 30 positions.

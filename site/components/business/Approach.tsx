@@ -1,17 +1,17 @@
-import { HOME_SECTION } from "@/lib/site";
+import { BUSINESS_SECTION } from "@/lib/site";
 import SplitSection from "../SplitSection";
 
 // Our tagline — Observe, Question, Explore — is also how we work, with delivery as the fourth step.
 const STEPS = [
-  { title: "Observe", text: "We learn how your business works today, with the people who do the work." },
-  { title: "Question", text: "We find the real problem worth solving, and agree what success looks like." },
-  { title: "Explore", text: "We prototype and test options quickly, so decisions rest on evidence." },
-  { title: "Deliver", text: "We build, launch and support the solution, and keep improving it with you." },
+  { title: "Observe", text: "Learn how your business works today." },
+  { title: "Question", text: "Agree on the real problem to solve." },
+  { title: "Explore", text: "Prototype and test options quickly." },
+  { title: "Deliver", text: "Build, launch and keep improving." },
 ];
 
 export default function Approach() {
   return (
-    <SplitSection id={HOME_SECTION.approach} eyebrow="How we work" title="From first question to working solution.">
+    <SplitSection id={BUSINESS_SECTION.approach} title="How we work.">
       <ol className="steps" role="list">
         {STEPS.map((step, index) => (
           <li className="step" key={step.title}>

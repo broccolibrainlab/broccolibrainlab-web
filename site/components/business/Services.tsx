@@ -1,35 +1,32 @@
-import { HOME_SECTION } from "@/lib/site";
+import { BUSINESS_SECTION } from "@/lib/site";
 import { CompassIcon, InsightIcon, PlatformIcon } from "../icons";
 
 const SERVICES = [
   {
     icon: <CompassIcon />,
     title: "Strategy & discovery",
-    text: "Understanding the problem first: how you work today, where it hurts, and what is worth building.",
+    text: "We learn how you work and find what’s worth building.",
   },
   {
     icon: <PlatformIcon />,
     title: "Software & platforms",
-    text: "Web apps, internal tools and integrations, designed around your people and your processes.",
+    text: "Web apps, internal tools and integrations that fit.",
   },
   {
     icon: <InsightIcon />,
     title: "Data & automation",
-    text: "Turning the data you already have into clear insight, and automating the routine work.",
+    text: "Clear insight from your data, and less routine work.",
   },
 ];
 
 export default function Services() {
   return (
-    <section className="exploring" id={HOME_SECTION.services} aria-labelledby="services-title">
+    <section className="exploring" id={BUSINESS_SECTION.services} aria-labelledby="services-title">
       <div className="container">
         <div className="section-head">
           <h2 className="exploring-title" id="services-title">
             What we do
           </h2>
-          <p className="caption" aria-hidden="true">
-            Discover · Build · Improve
-          </p>
         </div>
 
         <ul className="areas" role="list">

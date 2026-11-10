@@ -1,6 +1,6 @@
 import graph from "@/assets/data/business-graph.json";
 import type { RawGraph } from "@/lib/brainEngine";
-import { HOME_SECTION, anchor } from "@/lib/site";
+import { BUSINESS_SECTION, anchor } from "@/lib/site";
 import HeroGraph from "../HeroGraph";
 import { Arrow } from "../icons";
 
@@ -15,15 +15,14 @@ export default function Hero() {
             <span className="hero-line hero-line-accent">your business.</span>
           </h1>
           <p className="hero-lede">
-            We design and build practical digital solutions — software, data and automation — for tourism,
-            technology, agriculture, healthcare, transport, retail and&nbsp;beyond.
+            Practical software, data and automation, shaped around how your organisation&nbsp;works.
           </p>
           <div className="hero-actions">
-            <a className="button-primary" href={anchor(HOME_SECTION.services)}>
+            <a className="button-primary" href={anchor(BUSINESS_SECTION.services)}>
               Explore our services
               <Arrow />
             </a>
-            <a className="link-underline" href={anchor(HOME_SECTION.contact)}>
+            <a className="link-underline" href={anchor(BUSINESS_SECTION.contact)}>
               Start a conversation
             </a>
           </div>

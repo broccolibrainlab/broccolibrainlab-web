@@ -76,12 +76,9 @@ export default function SaliencyPage() {
 
       <section className="section" aria-labelledby="how-title">
         <div className="container section-grid">
-          <div>
-            <p className="eyebrow">How it works</p>
-            <h2 className="section-title" id="how-title">
-              Models of bottom-up attention.
-            </h2>
-          </div>
+          <h2 className="section-title" id="how-title">
+            Models of bottom-up attention.
+          </h2>
           <div className="section-body">
             <p className="prose-lead">
               Some things grab our attention before we decide to look for them: a red apple among green ones, a

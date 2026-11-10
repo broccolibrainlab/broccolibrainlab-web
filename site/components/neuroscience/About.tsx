@@ -5,7 +5,7 @@ import SplitSection from "../SplitSection";
 
 export default function About() {
   return (
-    <SplitSection id={NEURO_SECTION.about} eyebrow="About the group" title="Students learning about the brain, together.">
+    <SplitSection id={NEURO_SECTION.about} title="Students learning about the brain, together.">
       <p className="prose-lead">
         {SITE.name} is a group of undergraduate students curious about the human brain. We’re learning about
         cognition, memory and EEG together.

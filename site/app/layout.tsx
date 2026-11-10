@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: THEME_COLOR.business, // pages set their own palette's colour
+  themeColor: THEME_COLOR.home, // pages set their own palette's colour
   colorScheme: "dark",
 };
 

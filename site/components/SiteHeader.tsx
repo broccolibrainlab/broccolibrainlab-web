@@ -7,7 +7,7 @@ import { Arrow } from "./icons";
 import LogoMark from "./LogoMark";
 import SmartLink, { trimSlash, useCurrentPath } from "./SmartLink";
 
-/** "Interested areas": a disclosure menu on desktop, a plain labelled group inside the mobile menu. */
+/** "Focus areas": a disclosure menu on desktop, a plain labelled group inside the mobile menu. */
 function AreasMenu({ label, areas }: { label: string; areas: readonly Area[] }) {
   const current = useCurrentPath();
   const [open, setOpen] = useState(false);

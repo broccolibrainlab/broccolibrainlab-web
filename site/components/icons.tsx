@@ -146,3 +146,31 @@ export function PersonIcon() {
     </Svg>
   );
 }
+
+// ---- Home ----
+
+/** Collaboration: three people-nodes joined into a network. */
+export function NetworkIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <circle cx="32" cy="11" r="7" />
+      <circle cx="11" cy="50" r="7" />
+      <circle cx="53" cy="50" r="7" />
+      <path d="M28.5 17 14.5 44M35.5 17l14 27M18 50h28" />
+      <circle cx="32" cy="37" r="3.5" />
+      <path d="M32 18v15.5M14.5 46l14.5-7.5M49.5 46 35 38.5" />
+    </Svg>
+  );
+}
+
+/** Better solutions for the world: a globe. */
+export function GlobeIcon() {
+  return (
+    <Svg className="area-icon area-icon-square" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="27" />
+      <path d="M5 32h54M32 5v54" />
+      <path d="M32 5c-10 7.5-14 17-14 27s4 19.5 14 27M32 5c10 7.5 14 17 14 27s-4 19.5-14 27" />
+      <path d="M9.5 18h45M9.5 46h45" />
+    </Svg>
+  );
+}

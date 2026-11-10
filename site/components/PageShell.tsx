@@ -7,7 +7,7 @@ import SiteHeader from "./SiteHeader";
 type PageShellProps = {
   /** The palette for the whole page (see the data-page-theme blocks in app/globals.css). */
   theme: Theme;
-  /** Interested-area pages get that area's secondary nav under the header. */
+  /** Focus-area pages get that area's secondary nav under the header. */
   area?: Area["key"];
   children: React.ReactNode;
 };

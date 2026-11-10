@@ -3,6 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef } from "react";
 import { mountBrain, readCssPalette, type RawGraph } from "@/lib/brainEngine";
+import GraphSvg from "./GraphSvg";
 import LogoMark from "./LogoMark";
 
 type HeroGraphProps = {
@@ -10,18 +11,6 @@ type HeroGraphProps = {
   /** Static artwork for visitors without JavaScript. Without one, the graph itself is drawn as SVG. */
   fallback?: StaticImageData;
 };
-
-/** The graph's lines and nodes as a static SVG, used as the no-JavaScript fallback. */
-function GraphSvg({ graph }: { graph: RawGraph }) {
-  return (
-    <svg className="graph-svg" viewBox={`0 0 ${graph.w} ${graph.h}`} aria-hidden="true" focusable="false">
-      <path d={graph.edges.map((e) => `M${e.p.map(([x, y]) => `${x} ${y}`).join("L")}`).join("")} />
-      {graph.nodes.map((n, i) => (
-        <circle key={i} cx={n.x} cy={n.y} r={n.r} />
-      ))}
-    </svg>
-  );
-}
 
 // The artwork is drawn on a canvas in the page's accent colours. The static version lives in <noscript>
 // so it only appears for visitors without JavaScript and is never shown alongside the canvas.

@@ -14,8 +14,8 @@ function MemberCard({ member }: { member: TeamMember }) {
           <PersonIcon />
         )}
       </div>
-      <h3 className="member-name">{member.name ?? "Name coming soon"}</h3>
-      <p className="member-role">{member.role ?? "Role to be added"}</p>
+      <h3 className="member-name">{member.name ?? "Coming soon"}</h3>
+      {member.role && <p className="member-role">{member.role}</p>}
       {member.linkedin && (
         <a className="member-link" href={member.linkedin} target="_blank" rel="noopener noreferrer">
           LinkedIn
@@ -29,20 +29,17 @@ function MemberCard({ member }: { member: TeamMember }) {
 
 export default function Team() {
   return (
-    <section className="exploring team" id={HOME_SECTION.team} aria-labelledby="team-title">
-      <div className="container">
-        <div className="section-head">
-          <h2 className="exploring-title" id="team-title">
-            The team
-          </h2>
-          <p className="caption" aria-hidden="true">
-            People · Skills · Curiosity
-          </p>
+    <section className="lp-areas lp-team" id={HOME_SECTION.team} aria-labelledby="team-title">
+      <div className="lp-wrap">
+        <div className="lp-head">
+          <div>
+            <h2 className="lp-big" id="team-title">
+              The team
+            </h2>
+            <p className="lp-big lp-head-lede">The people who keep the lab connected.</p>
+          </div>
         </div>
-        <p className="team-lede">
-          A small team of builders and learners. Full introductions are on their way.
-        </p>
-        <ul className="members" role="list">
+        <ul className="members lp-members" role="list">
           {TEAM.map((member, index) => (
             <MemberCard member={member} key={member.name ?? index} />
           ))}

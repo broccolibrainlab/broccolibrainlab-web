@@ -15,7 +15,7 @@ export default function Hero() {
             <span className="hero-line hero-line-accent">built to learn.</span>
           </h1>
           <p className="hero-lede">
-            We design and build small games — to have fun, and to learn how people focus, decide and&nbsp;play.
+            Small games we design and build — for fun, and to learn how people&nbsp;play.
           </p>
           <div className="hero-actions">
             <a className="button-primary" href={anchor(GAMING_SECTION.play)}>

@@ -5,17 +5,17 @@ const AREAS = [
   {
     icon: <ControllerIcon />,
     title: "Game design",
-    text: "Mechanics, levels and the feel of play: what makes a game worth another try.",
+    text: "Mechanics, levels and the feel of play.",
   },
   {
     icon: <FocusIcon />,
     title: "Play & cognition",
-    text: "How games use attention, memory and reward — where our neuroscience interest meets play.",
+    text: "How games use attention, memory and reward.",
   },
   {
     icon: <PeopleIcon />,
     title: "Building together",
-    text: "We prototype, playtest with friends and iterate as a team.",
+    text: "We prototype, playtest and iterate as a team.",
   },
 ];
 
@@ -27,9 +27,6 @@ export default function Exploring() {
           <h2 className="exploring-title" id="exploring-title">
             What we’re exploring
           </h2>
-          <p className="caption" aria-hidden="true">
-            Design · Play · People
-          </p>
         </div>
 
         <ul className="areas" role="list">

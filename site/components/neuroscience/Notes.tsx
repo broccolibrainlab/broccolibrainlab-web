@@ -22,7 +22,7 @@ const TOPICS = [
 
 export default function Notes() {
   return (
-    <SplitSection id={NEURO_SECTION.notes} eyebrow="Notes" title="What we’re reading and discussing.">
+    <SplitSection id={NEURO_SECTION.notes} title="What we’re reading and discussing.">
       <ol className="topics" role="list">
         {TOPICS.map((topic, index) => (
           <li className="topic" key={topic.title}>

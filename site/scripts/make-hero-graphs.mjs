@@ -103,6 +103,110 @@ function arc(cx, cy, r, a0, a1) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Home: people connecting around the world. Eight people, linked hand to hand around the edge, each
+// also reaching in to a globe in the middle. The intro starts in every head at once and the signals
+// meet along the links — many people connecting to build better solutions for the world.
+
+/** A head-and-shoulders figure. Returns its head top (a root) and shoulder ends (where links attach). */
+function person(g, [cx, cy], s) {
+  const L = local(g, cx, cy, s);
+  const top = [0, -12];
+  const chin = [0, 12];
+  L.arc(0, 0, 12, -Math.PI / 2, Math.PI / 2);
+  L.arc(0, 0, 12, Math.PI / 2, (3 * Math.PI) / 2);
+  L.curve(chin, [[-11, 13], [-23, 21], [-24, 37]]);
+  L.curve(chin, [[11, 13], [23, 21], [24, 37]]);
+  const left = L.T([-24, 37]);
+  const right = L.T([24, 37]);
+  g.node(left, 2.8);
+  g.node(right, 2.8);
+  return { top: g.vertAt(L.T(top)), left, right };
+}
+
+/** A gentle curve from a to b, bowed away from `away` by `bend`. */
+function link(g, a, b, away, bend = 26) {
+  const d = [b[0] - a[0], b[1] - a[1]];
+  const len = Math.hypot(d[0], d[1]);
+  let n = [-d[1] / len, d[0] / len];
+  const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  if ((mid[0] - away[0]) * n[0] + (mid[1] - away[1]) * n[1] < 0) n = [-n[0], -n[1]];
+  const c1 = [a[0] + d[0] * 0.3 + n[0] * bend, a[1] + d[1] * 0.3 + n[1] * bend];
+  const c2 = [a[0] + d[0] * 0.7 + n[0] * bend, a[1] + d[1] * 0.7 + n[1] * bend];
+  g.edge(cubic(a, [c1, c2, b]));
+}
+
+function home() {
+  const g = graph();
+  const centre = [332, 262];
+  const R = 82;
+  const deg = (a) => (a * 180) / Math.PI;
+  const rad = (a) => (a * Math.PI) / 180;
+  const onGlobe = (a) => [centre[0] + Math.cos(rad(a)) * R, centre[1] + Math.sin(rad(a)) * R];
+
+  // People, clockwise from top left: [head centre, scale]. Slightly different sizes, so it reads as a
+  // crowd rather than a pattern.
+  const spots = [
+    [[92, 96], 1.38],
+    [[250, 58], 1.22],
+    [[414, 58], 1.28],
+    [[572, 100], 1.38],
+    [[598, 296], 1.26],
+    [[466, 414], 1.38],
+    [[204, 420], 1.28],
+    [[66, 300], 1.22],
+  ];
+  const people = spots.map(([pos, s]) => person(g, pos, s));
+
+  // Hand to hand around the ring: each neighbour pair joins at their two closest shoulders.
+  const dist = (u, v) => Math.hypot(u[0] - v[0], u[1] - v[1]);
+  people.forEach((p, i) => {
+    const q = people[(i + 1) % people.length];
+    const pairs = [p.left, p.right].flatMap((u) => [q.left, q.right].map((v) => [u, v]));
+    const [u, v] = pairs.sort((x, y) => dist(...x) - dist(...y))[0];
+    link(g, u, v, centre, 22);
+  });
+
+  // Everyone also reaches in to the globe, from the shoulder nearer the centre.
+  const globeAngles = [];
+  people.forEach((p) => {
+    const port = [p.left, p.right].sort(
+      (u, v) => Math.hypot(u[0] - centre[0], u[1] - centre[1]) - Math.hypot(v[0] - centre[0], v[1] - centre[1]),
+    )[0];
+    const a = deg(Math.atan2(port[1] - centre[1], port[0] - centre[0]));
+    globeAngles.push(a);
+    link(g, port, onGlobe(a), [centre[0], centre[1] - 400], 8);
+  });
+
+  // The globe: its outline (split wherever something meets it), an equator, a meridian and two
+  // parallels.
+  const py = 40;
+  const pa = deg(Math.asin(py / R));
+  const fixed = [0, 90, 180, 270, -pa, 180 + pa, pa, 180 - pa];
+  const angles = [...new Set([...globeAngles, ...fixed].map((a) => Math.round(((a % 360) + 360) % 360 * 10) / 10))].sort(
+    (a, b) => a - b,
+  );
+  angles.forEach((a, i) => {
+    const b = i === angles.length - 1 ? angles[0] + 360 : angles[i + 1];
+    g.edge(arc(centre[0], centre[1], R, rad(a), rad(b)));
+  });
+  g.edge([onGlobe(180), onGlobe(0)]);
+  g.edge([onGlobe(270), onGlobe(90)]);
+  for (const side of [1, -1]) {
+    g.edge(
+      cubic(onGlobe(270), [
+        [centre[0] + side * 46, centre[1] - R],
+        [centre[0] + side * 46, centre[1] + R],
+        onGlobe(90),
+      ]),
+    );
+  }
+  g.edge([onGlobe(180 + pa), onGlobe(-pa)]);
+  g.edge([onGlobe(180 - pa), onGlobe(pa)]);
+
+  return { ...g.toJSON(), roots: people.map((p) => p.top) };
+}
+
+// ---------------------------------------------------------------------------------------------
 // Business: one hub wired out to six industries — tourism, technology, agriculture, healthcare,
 // transport and retail — each drawn as a line icon. The intro signal starts in the hub and flows
 // out to every industry. The industry names are rendered as HTML labels (see `labels`).
@@ -402,6 +506,7 @@ function gaming() {
 }
 
 for (const [name, data] of [
+  ["home-graph.json", home()],
   ["business-graph.json", business()],
   ["gaming-graph.json", gaming()],
 ]) {
