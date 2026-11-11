@@ -6,11 +6,13 @@ type LpIntroProps = {
   paragraphs: readonly string[];
   action?: React.ReactNode;
   figures: readonly Figure[];
+  /** Optional mark (the logo) centred between the heading and the story. */
+  mark?: React.ReactNode;
 };
 
 // A paper band: the story on the left (it stays in view while the figures scroll), figures on the right,
 // split by a hairline.
-export default function LpIntro({ id, title, paragraphs, action, figures }: LpIntroProps) {
+export default function LpIntro({ id, title, paragraphs, action, figures, mark }: LpIntroProps) {
   const titleId = `${id}-title`;
   return (
     <section className="lp-paper lp-intro" id={id} aria-labelledby={titleId}>
@@ -18,6 +20,7 @@ export default function LpIntro({ id, title, paragraphs, action, figures }: LpIn
         <h2 className="lp-big" id={titleId}>
           {title}
         </h2>
+        {mark && <div className="lp-intro-mark">{mark}</div>}
         <div className="lp-intro-foot">
           <div className="lp-intro-copy">
             {paragraphs.map((text) => (

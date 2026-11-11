@@ -19,12 +19,14 @@ type LpClosingProps = {
   /** One sentence; it inks in word by word as it scrolls into view. */
   statement: string;
   note: string;
+  /** Optional short columns under the statement, saying a little more about the group. */
+  details?: readonly { title: string; text: string }[];
   /** Subject line for the email button, so we know which page it came from. */
   subject: string;
 };
 
 // The closing band of every landing-pattern page: one centred statement, then the two ways to reach us.
-export default function LpClosing({ id, title, statement, note, subject }: LpClosingProps) {
+export default function LpClosing({ id, title, statement, note, details, subject }: LpClosingProps) {
   const titleId = `${id}-title`;
   return (
     <section className="lp-paper lp-closing" id={id} aria-labelledby={titleId}>
@@ -38,6 +40,16 @@ export default function LpClosing({ id, title, statement, note, subject }: LpClo
             <span key={i}>{word} </span>
           ))}
         </p>
+        {details && (
+          <ul className="lp-closing-details" role="list">
+            {details.map((item) => (
+              <li key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        )}
         <p className="lp-small lp-closing-note">{note}</p>
         <div className="lp-actions lp-actions-center">
           <EmailPill subject={subject} />

@@ -1,4 +1,5 @@
 import { HOME_SECTION, anchor } from "@/lib/site";
+import LogoMark from "../LogoMark";
 import LpIntro from "../landing/LpIntro";
 import Pill from "../landing/Pill";
 
@@ -21,6 +22,7 @@ export default function About() {
       ]}
       action={<Pill href={anchor(HOME_SECTION.how)}>How we work</Pill>}
       figures={FIGURES}
+      mark={<LogoMark size={160} />}
     />
   );
 }

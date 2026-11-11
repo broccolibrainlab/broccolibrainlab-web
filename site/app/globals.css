@@ -2244,6 +2244,9 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   height: 100%;
   object-fit: cover;
   object-position: center 55%;
+  /* The blurred preview HeroPhoto inlines, shown until the photo itself has loaded. */
+  background-position: center 55%;
+  background-size: cover;
   filter: grayscale(1) contrast(1.08) brightness(0.62);
 }
 
@@ -2390,6 +2393,18 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   padding: 48px var(--lp-gutter);
 }
 
+/* The logo, centred in the space between the heading and the story (home page). */
+.lp-intro-mark {
+  display: grid;
+  flex: 1;
+  place-items: center;
+}
+
+.lp-intro-mark .logo-mark {
+  width: clamp(120px, 13vw, 200px) !important;
+  height: clamp(120px, 13vw, 200px) !important;
+}
+
 .lp-intro-copy {
   display: grid;
   gap: 32px;
@@ -2439,7 +2454,6 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 .lp-process {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  min-height: 809px;
   background: var(--deep);
 }
 
@@ -2454,15 +2468,66 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   color: var(--text-faint);
 }
 
-/* Two by two, sized so the four portraits sit beside the steps without stretching the band. */
+/* Two by two across the panel: a round portrait, then name, degree and profile links, all centred. */
 .lp-members {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 16px;
-  max-width: 400px;
-  margin-top: 64px;
+  gap: 48px 32px;
+  max-width: none;
+  margin-top: 56px;
 }
 
+.lp-members .member {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+}
+
+.lp-members .member-photo {
+  width: clamp(104px, 9.5vw, 144px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.lp-members .member-photo img {
+  object-position: center 22%;
+}
+
+.lp-members .member-name {
+  margin-top: 18px;
+}
+
+.lp-members .member-links {
+  justify-content: center;
+}
+
+.member-degree {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.member-degree span {
+  display: block;
+  color: var(--text-faint);
+}
+
+.member-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin-top: 12px;
+}
+
+.member-links .member-link {
+  margin-top: 0;
+}
+
+/* The steps fill their half: larger type, and the button sits at the foot of the band, level with the team. */
 .lp-process-body {
+  display: flex;
+  flex-direction: column;
   padding: 48px var(--lp-gutter);
   color: #f3f3f1;
 }
@@ -2470,24 +2535,26 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 .lp-process-lede {
   max-width: 620px;
   margin-top: 33px;
+  margin-bottom: 56px;
   color: #8fa294;
 }
 
+/* The four steps sit in the middle of their half, between the lede and the button. */
 .lp-steps {
   position: relative;
   display: grid;
-  gap: 16px;
-  max-width: 450px;
-  margin-top: 96px;
-  padding-left: 22px;
+  gap: 28px;
+  max-width: 560px;
+  margin: auto;
+  padding-left: 28px;
 }
 
 /* The thread that joins the circles, with a short tick out to each one. */
 .lp-steps::before {
   content: "";
   position: absolute;
-  top: 24px;
-  bottom: 24px;
+  top: 28px;
+  bottom: 28px;
   left: 0;
   width: 1px;
   background: #f3f3f1;
@@ -2497,18 +2564,18 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 .lp-step {
   position: relative;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   align-items: center;
-  gap: 16px;
-  min-height: 48px;
+  gap: 20px;
+  min-height: 56px;
 }
 
 .lp-step::before {
   content: "";
   position: absolute;
   top: 50%;
-  left: -22px;
-  width: 22px;
+  left: -28px;
+  width: 28px;
   height: 1px;
   background: #f3f3f1;
   opacity: 0.6;
@@ -2517,28 +2584,32 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 .lp-step-num {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border: 1px solid #f3f3f1;
   border-radius: 50%;
   background: var(--deep);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .lp-step-copy {
   display: grid;
-  font-size: 13px;
-  line-height: 1.3;
+  gap: 3px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #b9c3bb;
 }
 
 .lp-step-copy strong {
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 600;
+  color: #f3f3f1;
 }
 
 .lp-process-actions {
-  margin-top: 96px;
+  padding-top: 56px;
 }
 
 /* Focus areas and team: near-black bands with a head row and 2:3 cards. */
@@ -2783,6 +2854,30 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
   }
 }
 
+/* A little more about the group (home page): three short columns under the statement. */
+.lp-closing-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 72px;
+  text-align: left;
+}
+
+.lp-closing-details h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lp-closing-details p {
+  margin-top: 10px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--paper-muted);
+}
+
 .lp-closing-note {
   margin-top: 120px;
 }
@@ -2981,6 +3076,21 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
 
   .lp-members {
     max-width: none;
+    gap: 40px 16px;
+    margin-top: 48px;
+  }
+
+  .lp-steps {
+    margin-inline: 0;
+  }
+
+  .lp-intro-mark {
+    padding-block: 8px;
+  }
+
+  .lp-closing-details {
+    grid-template-columns: 1fr;
+    gap: 28px;
     margin-top: 48px;
   }
 
@@ -3336,7 +3446,8 @@ html:not(.js) .nav-group:not(:hover, :focus-within) .nav-group-panel {
     width: 100%;
   }
 
-  .members {
+  /* Card grids go two up on phones; the home page's team list stays one row per person. */
+  .members:not(.lp-members) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px 16px;
   }

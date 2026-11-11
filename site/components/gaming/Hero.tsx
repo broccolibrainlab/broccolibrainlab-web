@@ -1,6 +1,5 @@
-import Image from "next/image";
-import heroPhoto from "@/assets/images/hero-gaming.jpg";
 import { GAMING_SECTION, anchor } from "@/lib/site";
+import HeroPhoto from "../landing/HeroPhoto";
 import LpHero from "../landing/LpHero";
 import Pill from "../landing/Pill";
 
@@ -10,7 +9,7 @@ export default function Hero() {
       overlay
       media={
         // Photo: "Person sitting on gaming chair while playing video game", Unsplash (Mf23RF8xArY), Unsplash Licence.
-        <Image className="lp-hero-photo" src={heroPhoto} alt="A player in a headset at a gaming event, facing a bright screen." priority sizes="100vw" />
+        <HeroPhoto photo="gaming" alt="A player in a headset at a gaming event, facing a bright screen." />
       }
       title={["Made for play,", "built to learn."]}
       lede={<>Small games we design and build, for fun and to learn how people&nbsp;play.</>}
